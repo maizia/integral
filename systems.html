@@ -1,0 +1,4220 @@
+<head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital@1&display=swap');
+  </style>
+  <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    type="text/javascript"></script>
+
+  <!-- <script src="MathJax/MathJax.js" type="text/javascript"></script> -->
+
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <title>integral | systems</title>
+  <script async="" src="Chartjs/analytics.js"></script>
+  <script src="Chartjs/Chart.js"></script>
+  <script src="Chartjs/utils.js"></script>
+  </script>
+  <script>
+    function resizeCanvas() {
+      var canvs = document.getElementById("1-2");
+      canvs.width = window.innerWidth - 20;
+      canvs.height = window.innerHeight - 20;
+    }
+  </script>
+
+</head>
+
+<style>
+  body {
+    font-family: 'Open Sans', sans-serif;
+    animation: fadeInAnimation ease 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    font-size: 18px;
+    background: #02354D;
+    user-select: none;
+    overflow: auto;
+  }
+
+  .draggable {
+    width: 48px;
+    height: 48px;
+    background: red;
+    cursor: grab;
+    user-select: none;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 50%;
+    border: 2px solid white;
+    color: white;
+    font-size: 16px;
+    font-style: italic;
+    font-family: Times;
+    z-index: 1000;
+  }
+
+  .draggable:hover {
+    border: 2px solid black;
+  }
+
+
+
+
+
+
+  .linkPoint {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 1;
+    border: 1px solid gray;
+    font-size: 30px;
+    color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+  }
+
+
+
+
+
+  .linkPoint:hover:after {
+    content: '\00D7';
+  }
+
+  .name {
+    cursor: default;
+    font-size: 22px;
+  }
+
+  #information {
+    position: fixed;
+    top: 50px;
+    left: 909px;
+    width: 350px;
+    bottom: 20px;
+    background: green;
+    border: 1px solid silver;
+    transition: 0.5s ease;
+  }
+
+  #tools {
+    position: fixed;
+    top: 0px;
+    left: 905px;
+    width: 350px;
+    height: 40px;
+    background: white;
+    border: 4px solid #02354D;
+    transition: 0.5s ease;
+  }
+
+  .text {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-size: 28px;
+    background: none;
+  }
+
+  input {
+    text-align: center;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  textarea {
+    position: absolute;
+    resize: none;
+  }
+
+  #formule {
+    opacity: 0;
+    transition: 0.5s ease;
+    cursor: pointer;
+  }
+
+  #formule:hover {
+    opacity: 1;
+  }
+
+  #styloUp {
+    height: 10px;
+    width: 10px;
+    z-index: 1000;
+    cursor: copy;
+    background: red;
+
+  }
+
+  #styloDown {
+    height: 10px;
+    width: 10px;
+    z-index: 1000;
+    background: #385D8A;
+  }
+
+  button {
+    height: 40px;
+    background: none;
+    border: 1px solid silver;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    transition: 0.5s ease;
+    opacity: 0.7;
+  }
+
+  button:hover {
+    background: white;
+    opacity: 1;
+    color: gray;
+  }
+
+  .boutton {
+    position: absolute;
+    top: 10px;
+    height: 30px;
+    width: 110px;
+    background: none;
+    cursor: pointer;
+    color: white;
+    font-size: 12px;
+    transition: 0.5s ease;
+    opacity: 0.5;
+    cursor: pointer;
+  }
+
+  .boutton:hover {
+    opacity: 1;
+  }
+
+
+  .icon {
+    height: 35px;
+    width: 35px;
+    background: none;
+    cursor: pointer;
+    color: white;
+    transition: 0.5s ease;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: none;
+    opacity: 0.5;
+  }
+
+  .icon:hover {
+    opacity: 1;
+    width: 60px;
+  }
+
+  .simulationexogene {
+    margin-right: 0px;
+    background: rgba(58, 93, 138, 1);
+    margin-top: 5px;
+    border-radius: 10px;
+    padding: 0px 10px 10px 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    border: 0px solid white;
+  }
+
+  .simulationexogene:hover {
+    background: rgba(58, 93, 138, 0.5);
+  }
+
+  .simulationendogene {
+    margin-right: 0px;
+    background: rgba(255, 165, 0, 1);
+    margin-top: 5px;
+    border-radius: 10px;
+    padding: 0px 10px 10px 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    border: 0px solid white;
+  }
+
+  .simulationendogene:hover {
+    background: rgba(255, 165, 0, 0.5);
+  }
+
+  .simulationfinalite {
+    margin-right: 0px;
+    background: rgba(255, 0, 0, 1);
+    margin-top: 5px;
+    border-radius: 10px;
+    padding: 0px 10px 10px 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    border: 0px solid white;
+  }
+
+  .simulationfinalite:hover {
+    background: rgba(255, 0, 0, 0.5);
+  }
+
+  .slide {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+    right: 10px;
+    background: green;
+    transition: 0.5s ease;
+  }
+
+  .slideButton {
+    position: absolute;
+    left: 10px;
+    width: 48px;
+    height: 48px;
+    background: red;
+    cursor: pointer;
+    user-select: none;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 16px;
+    font-style: italic;
+    font-family: Times;
+    z-index: 1000;
+    transition: 0.25s ease;
+    opacity: 0.7;
+  }
+
+  .slideButton:hover {
+    border: 2px solid rgba(255, 255, 255, 1);
+
+  }
+
+  .exporter {
+    width: 150px;
+    height: 150px;
+    background: #463253;
+    border: 2px solid rgba(1, 1, 1, 0);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    transition: 0.4s ease;
+    font-size: 14px;
+    display: flex;
+  }
+
+  .exporter:hover {
+    border: 2px solid silver;
+
+  }
+
+  .times {
+    color: white;
+    transition: 0.5s ease;
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    font-size: 24px;
+  }
+
+  .times:hover {
+    color: red;
+  }
+</style>
+
+<body id="body" style="overflow: hidden;">
+  <div style="border:4px solid #02354D;position: absolute;left:0px;top:0px;width:880px;height: 600px;background: white;border-radius: 0px;
+  ;text-align: right;padding: 10px;font-size: 24px;color: gray;" id="fond"> <span id="titre">\({}\)</span></div>
+  <canvas width="900" height="620" style="border:0px solid green;position: absolute;left:0px;top:0px;"
+    id="newLink"></canvas>
+  <div id="window" style="position:absolute;top:0px;left: 0px; right: 20px;bottom: 20px; ">
+
+
+    <!-- Liens -->
+    <!-- <canvas width="900" height="620" style="border:0px solid black;position: absolute;left:0px;top:0px;"
+      id="1-2"></canvas> -->
+    <div
+      style="border:0px solid silver;position: absolute;left:0px;top:0px;width:900px;height: 620px;background: none;border-radius: 10px;"
+      id="noLink" onclick="setsystem()" oncontextmenu="displayAjouter(event)"> </div>
+    <!-- Variables -->
+    <!-- <div class="draggable" id='1' style="top:500px;left:400px;background: #385D8A;" value=0
+      onmousedown="setVariable('1')" name="variable" oncontextmenu="displaySupprimer(event)">
+      <div id="name:1" class="name"> </div>
+    </div>-->
+    <!-- Points supprimant les liens -->
+    <!-- <div class="linkPoint" id="linkPoint:1-2" onclick="deletelink('1-2')"></div> -->
+  </div>
+  <div class="draggable" id="styloUp" onmousedown="startLink()" name="stylo"></div>
+  <div class="draggable" id="styloDown" onmousedown="startLink()" name="stylo"></div>
+
+  <div id="information" style="width: 350px;">
+    <div
+      style="position: absolute;top:2px;left: 2px;width: 200px;background: none;color: white;font-size: 12px;cursor: pointer;"
+      onclick="resizefig()" id="aggrandir">
+      &#9664; Aggrandir
+    </div>
+
+    <div
+      style="position: absolute;top:20px;left:10px;right: 10px;bottom:60px;border: 0px solid silver;transition: 0.5s ease;background: none;"
+      id="information variable">
+
+      <input style="top:0px;left:80px;width: 75px;height: 75px;border-radius: 50%;border: 2px solid silver;text-align: center;
+        font-size: 20px;font-style: italic;font-family: Times;color: white;" id="name" onchange="updateName()">
+
+      <input style="top:55px;left:125px;width: 40px;height: 40px;border-radius: 50%;border: 2px solid silver;text-align: center;
+font-size: 20px;font-style: italic;font-family: Times;color: white;" id="indice" onchange="updateName()">
+
+
+      <input style="top:10px;left:0px;" id="min" onchange="getPropertie()">
+      <input style="top:10px;left:190px;" id="max" onchange="getPropertie()">
+      <input style="top:10px;left:270px;" id="unite" onchange="getPropertie()">
+      <input style="top:55px;left:190px;" id="i" onchange="getPropertie()">
+      <input style="top:55px;left:270px;" id="j" onchange="getPropertie()">
+      <input style="top:110px;left:0px;width: 100%;height: 30px;" id="definition" placeholder="Définition"
+        onchange="getPropertie()">
+      <input style="top:145px;left:0px;width: 100%;height: 30px;z-index: 1000;" id="formule" placeholder="Formule"
+        onchange="getText();getPropertie()">
+      <textarea style="top:180px;left:0px;width: 100%;height:105px;font-family:'Courier New', Courier, monospace;font-size: 14px;
+        color:white;background: #3f3f3f;border: 1px silver solid;z-index: 1000;transition: 0.5s ease;" id="code"
+        placeholder="Code" onchange="getPropertie()" oncontextmenu="displayCodeMenu(event)"></textarea>
+
+      <select style="position:absolute;top:150px;width: 100%;height: 30px;cursor: pointer;" onchange="getPropertie()"
+        id="select type">
+        <option value="reel">Réel</option>
+        <option value="entier">Entier naturel</option>
+        <option value="vecteur croissant">Vecteur croissant</option>
+        <option value="vecteur decroissant">Vecteur décroissant</option>
+        <option value="model 1d">Modèle 1D (réseau)</option>
+        <option value="model 2d">Modèle 2D (polygones)</option>
+      </select>
+
+      <div
+        style="top:140px;left:0px;width: 100%;height: 30px;font-size: 18px;font-family: 'Times New Roman', Times, serif;background-color: none;padding-top: 10px;color:white"
+        class="text" id="equation">
+        \({}\)
+      </div>
+
+      <div style="top:10px;left:40px;" class="text">
+        &#8804;
+      </div>
+      <div>
+        <div style="top:10px;left:150px;" class="text">
+          &#8804;
+        </div>
+        <div style="top:10px;left:230px;font-size: 20px;" class="text">
+          en
+        </div>
+        <div style="top:55px;left:155px;" class="text" id="text i">
+          :
+        </div>
+        <div style="top:55px;left:230px;font-size: 20px" class="text" id="text j">
+          sur
+        </div>
+      </div>
+
+      <div
+        style="position:absolute;top:200px;left:0px;right:0px;bottom: 0px;overflow-y: auto;background: none;transition: 0.5s ease;"
+        id="more information">
+        <select style="position:absolute;top:0px;width: 100%;height: 30px;cursor: pointer;" onchange="getPropertie()"
+          id="select graphic">
+          <option value="line">Lignes</option>
+          <option value="bar">Histogramme</option>
+          <option value="area">Aire</option>
+          <option value="text">Texte</option>
+          <option value="console">Console</option>
+        </select>
+
+        <div style="position:absolute;top:30px;left:0px; right:0px;background:none;
+          opacity:1;padding:10px;transition: ease 0.5s;right: 0px;height:200px ;
+          display: flex;justify-content: center;align-items: center;text-align: center;
+    color: white;font-size: 28px;font-family: 'Times New Roman', Times, serif;" id="graphic container">
+          <span id="graphic text" onclick="setValueToVariable()"></span>
+          <canvas id="graphic"></canvas>
+        </div>
+
+        <div style="position:absolute;top:35px;left:0px; right:0px;background:none;
+        opacity:1;padding:10px;transition: ease 0.5s;right: 0px;height:200px ;" id="console container">
+          <textarea disabled
+            style="position:absolute;left:1%;width:98%;top:0%;height: 80%;color: white;background: none;border: 1px solid silver;"
+            id="console value"></textarea>
+        </div>
+
+
+
+
+
+        <textarea style="width: 100%;top:220px;height: 150px;" id="note" placeholder="Ajouter des notes"
+          onchange="getPropertie()"></textarea>
+
+        <div style="position: absolute;top:410px;width: 100%;height: 150px;">
+          <center>
+            <img src="images/image.png" style="max-height: 150px;max-width: 100%;;" id="image">
+          </center>
+          <div class="icon">
+            <input id="imageInput" onchange="convertToBase64()" type="file"
+              style="opacity: 0;z-index: 200;cursor: pointer;" accept="image/*">
+            <div class="icon" style="background-image: url(images/icons/image.png);z-index: 100;opacity: 1;">
+            </div>
+          </div>
+        </div>
+
+        <input style="width: 100%;top:600px;text-align: left;font-size: 12px;" id="source" placeholder="Sources"
+          onchange="getPropertie()">
+        <textarea style="width: 100%;top:650px;height: 50px;" id="iframe" placeholder="Ajouter embeded"
+          onchange="getPropertie()"></textarea>
+      </div>
+    </div>
+
+
+    <div
+      style="position: absolute;top:20px;left:10px;right: 10px;height: 300px;border: 0px solid silver;transition: 0.5s ease;z-index: 0;background: none; opacity: 0;"
+      id="information system">
+      <input style="top:0px;left:0px;width: 100%;height: 30px;" placeholder='fonction' id="system.name"
+        onchange="setSystemPropertie()">
+      <input style="top:35px;left:0px;width: 100%;height: 30px;" placeholder='Définition' id="system.definition"
+        onchange="setSystemPropertie()">
+      <textarea style="top:70px;width: 100%;height: 150px;"
+        placeholder='Décrire les objectifs que remplit la fonction "system"' id="system.note"></textarea>
+
+
+      <input style="width: 100%;top:230px;text-align: left;font-size: 12px;" placeholder="Sources"
+        onchange="setSystemPropertie()" id="system.source">
+      <textarea style="width: 100%;top:275px;height: 50px;" placeholder="Ajouter embeded"
+        onchange="setSystemPropertie()" id="system.iframe"></textarea>
+    </div>
+
+
+
+    <div
+      style="position: absolute;left:10px;bottom:0px;height: 30px;right: 0px;background: none;padding: 10px;right:10px">
+
+      <button onclick="calculSystem()" style="position:absolute; width: 50%;top:0px;left:0px" id="calculer tout">
+        calculer tout <span id="button calculer tout"
+          style="font-family: 'Times New Roman', Times, serif;font-size: 22px;font-style: italic;"></span></button>
+
+      <button onclick="simuler()" style="position:absolute; width: 50%;top:0px;left:50%" id="simuler">
+        Simuler <span id="button simuler"
+          style="font-family: 'Times New Roman', Times, serif;font-size: 22px;font-style: italic;"></span></button>
+
+      <button onclick="calculVariable()" style="position:absolute; width: 33%;top:0px;left:0px" id="recalculer">
+        Recalculer <span id="button recalculer"
+          style="font-family: 'Times New Roman', Times, serif;font-size: 22px;font-style: italic;"></span></button>
+
+
+      <button onclick="calculnow()" style="position:absolute; width: 33%;top:0px;left:0px" id="calculer">
+        Calculer <span id="button calculer"
+          style="font-family: 'Times New Roman', Times, serif;font-size: 22px;font-style: italic;"></span></button>
+
+
+      <button style="position:absolute; width: 33%;top:0px;left:33%" id="exporter"
+        onclick="document.getElementById('window exporter').style.display='flex';">Exporter</button>
+
+
+      <button onclick="document.getElementById('window importer').style.display='flex'"
+        style="position:absolute; width: 33%;top:0px;left:66%" id="importer">Importer</button>
+    </div>
+
+  </div>
+
+  <div id="tools">
+    <table style="width: 10px;">
+      <tr>
+        <td id="run">
+          <div class="icon" onclick="window.location.replace('../integral.html')"
+            style="background-image: url(images/icons/integral.png);opacity: 1;"></div>
+        </td>
+        <td>
+          <div class="icon">
+            <input onchange=" readFile(this)" type="file" accept=".tstx"
+              style="opacity: 0;z-index: 200;cursor: pointer;">
+            <div class="icon" style="background-image: url(images/icons/open.png);z-index: 100;opacity: 1;"></div>
+          </div>
+        </td>
+        <td id="run">
+          <div onclick="saveFile()" class="icon" style="background-image: url(images/icons/save.png);">
+          </div>
+        </td>
+        <td id="run">
+          <div onclick="deposerFile()" class="icon" style="background-image: url(images/icons/upload.png);">
+          </div>
+        </td>
+
+        <td id="run">
+          <div style="width:30px"></div>
+        </td>
+        <td id="run">
+          <div class="icon" onclick="calculSystem()" style="background-image: url(images/icons/calculer.png);"></div>
+        </td>
+        <td id="run">
+          <div class="icon" onclick="simuler()" style="background-image: url(images/icons/iteration.png);"></div>
+        </td>
+        <td id="run">
+          <div class="icon" onclick="displayDiaporama()" style="background-image: url(images/icons/ecran.png);"></div>
+        </td>
+        <td id="run">
+          <div class="icon" onclick="help()" style="background-image: url(images/icons/livre.png);"></div>
+        </td>
+
+      </tr>
+    </table>
+  </div>
+
+  <div id="window simuler"
+    style="position: absolute;top:-100%;left:0px;right: 0px;bottom: 100%;background: #02354D;transition: 0.4s ease;padding: 10px;color: white;opacity: 0.95;">
+    <div style="position: absolute;right:1%;top:5px;cursor: pointer;" onclick="closeSimuler()">Fermer</div>
+    <div id="list input"
+      style="position: absolute;left: 1%;top:40px;bottom: 40px;width: 24%;background: none;overflow-y: auto;">
+    </div>
+    <div id="resultat simulation"
+      style="position: absolute;left:26%;right: 26%;top:40px;bottom: 40px;background: none;padding:10% 2% 10% 2%;display: none;">
+
+      <canvas id="graphic simulation"></canvas>
+
+      <button style="position:absolute;bottom: 0px;left:30%;width:40%" onclick="exportSimulation()"
+        id="export simulation">
+        Exporter la simulation</button>
+    </div>
+
+    <div
+      style="position: absolute;left:26%;right: 26%;top:40px;bottom: 40px;background: none;display: flex;justify-content: center;align-items: center;text-align: center;z-index: 22000;"
+      id="parametre simulation">
+      <div style="width: 200px;height: 200px;border-radius: 50%;background: red;display: flex;justify-content: center;
+        align-items: center;text-align: center;font-size: 24px;color: white;cursor: pointer;transition: 0.2s ease;"
+        onclick="simulenow()" id="button simulation">
+        <table style="text-align: center;color: white;font-size: 20px;">
+          <tr>
+            <td>
+              Simuler
+            </td>
+          </tr>
+          <tr>
+            <td id="output" style="font-size: 40px;font-family: 'Times New Roman', Times, serif;">
+              ?
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div id="input" style="position:absolute;bottom:25%;
+      left:0px;right:0px;background: none;font-size: 30px;">
+      </div>
+
+    </div>
+
+    <div id="list output"
+      style="position: absolute;right: 1%;top:40px;bottom: 40px;width: 24%;background: none;overflow-y: auto;">
+    </div>
+  </div>
+
+
+  <div id="window diaporama"
+    style="position: absolute;top:-100%;left:0px;right: 0px;bottom: 100%;background: rgba(2, 53, 77, 0.9);transition: 0.4s ease;padding: 10px;color: white;opacity: 1;">
+    <div style="position: absolute;right:1%;top:5px;cursor: pointer;" onclick="closeDiaporama()">Fermer</div>
+
+    <div id="diaporama" style="position: absolute;top:50px;left: 130px;bottom: 50px;right: 50px;border:0px solid silver;overflow: hidden;
+      transition: 0.5s ease;" onclick="chooseSlidePlus()">
+      <div style="position: absolute;top:0px;left: 10px;" id="diaporama titre" style="transition: 0.25s ease;">
+        <table style="color:white;height: 60px;background: none;">
+          <tr>
+            <td><span id="diaporama equation" style="font-size: 26px;">\({}\)</span></td>
+            <td><span id="diaporama unite"></span></td>
+          </tr>
+        </table>
+      </div>
+      <div id="diaporama definition" style="position: absolute;top:80px;left: 10px;font-size: 28px;">definition</div>
+
+      <div style="position: absolute;top:120px;left: 0px;width: 100%;bottom: 80px; color:white;background:none ;">
+        <table style="padding: 10px;background: none;width: 100%; height: 100%;color: white;" border="0">
+          <tr>
+            <td
+              style="display: block;font-size: 14px;width: 100%;height: 60%;text-align:justify;text-justify: distribute;;"
+              id="diaporama note">
+              note
+            </td>
+            <td style="width: 30%;height: 60%;padding: 15px;"><img src="" id="diaporama image" style="max-width: 100%;">
+              <div id="diaporama iframe"></div>
+            </td>
+            <td style="width: 40%;height: 60%;padding: 15px;text-align: center;font-size: 50px;background: none;">
+
+
+              <span id="diaporama text graphic"></span>
+              <canvas id="graphic diaporama" style="display: none;"></canvas>
+            </td>
+          </tr>
+        </table>
+        <div id="console diaporama"
+          style="position: absolute; left:60%;right: 5%;top: 10%; bottom: 10%; display: none;background: none;">
+          <textarea
+            style="width: 100%;height: 100%;border: 0px solid;background: none;color:white;font-size: 24px;overflow: hidden;font-family: 'Courier New', Courier, monospace;"
+            id="console value diaporama" disabled>
+              </textarea>
+        </div>
+      </div>
+      <div id="diaporama source" style="position: absolute;left: 10px;bottom: 10px;font-size: 14px;">source</div>
+    </div>
+    <div id="menu diaporama"
+      style="position: absolute;top:50px;left: 10px;bottom: 50px;width: 90px;border:0px solid silver;overflow: auto;">
+    </div>
+
+    <div id="diaporama cache"
+      style="position: absolute;top:50px;left: 130px;height: 80px;right: 50px;background: green;transition: 0.5s ease;">
+    </div>
+    <button onclick="toggleFullScreen()" style="height: 20px;border-width: 0px;">Plein écran</button>
+  </div>
+
+  <select style=" position: absolute;top:300px;width: 160px;height: 110px;overflow: hidden;z-index: 1000;cursor:
+      pointer;" multiple onclick="getSystemAction()" id="ajouter variable">
+    <option value="ajouter">Ajouter une variable</option>
+    <!-- <option value="arranger">Arranger le toast</option> -->
+    <option value="calculer tout">Calculer tout</option>
+    <option value="simuler">Simuler</option>
+    <option value="editCode">Copier le script</option>
+
+  </select>
+  <select style="position: absolute;top:300px;width: 150px;height: 65px;overflow: hidden;z-index: 1000;" multiple
+    onclick="getVariableAction()" id="supprimer variable">
+    <option value="supprimer">Supprimer la variable</option>
+    <option value="harmoniser" id="harmoniser">Appliquer l'indice</option>
+    <option value="copier" id="harmoniser">Copier les valeurs</option>
+
+  </select>
+
+  <select style="position: absolute;top:300px;width: 210px;height: 60px;overflow: hidden;z-index: 1000;" multiple
+    onclick="getCodeAction()" id="ajouter code">
+    <option value="coller formule">Coller la formule</option>
+    <option value="ajouter boucle">Coller la formule dans une boucle</option>
+  </select>
+
+
+  <div id=" editor" style="display: block;position:absolute;left:200px">
+  </div>
+  <div id="editordata" style="display: block;position:absolute;left:200px">
+  </div>
+
+  <textarea id="console" value='dddd'
+    style="position:absolute; width:500px;bottom: 30px;height: 100px;display: none;"></textarea>
+
+
+  <br>
+
+  <div style="position: absolute;top:0px;left: 0px;bottom: 0px;right: 0px;background: #02354D;z-index: 20000000;color:white;
+    cursor: pointer; display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;transition: 1s ease;" id="welcome">
+    <table style="color:white;text-align: center;">
+      <tr>
+        <td>
+          Démarrer systems
+        </td>
+      </tr>
+      <tr>
+        <td style="width:30vh;height: 30vh;background: #385D8A;">
+          <img src="images/icons/systems.png" style="max-height: 75px;">
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="window exporter" style="position:absolute;top:0px;left: 0px;bottom: 0px;right: 0px;background: rgba(0, 0,0,0.7);display: none;justify-content: center;
+    align-items: center;
+    text-align: justify;z-index: 2000000000000000000000000;">
+    <div style="position: absolute;top:10px;right: 10px;cursor: pointer;color:white"
+      onclick="document.getElementById('window exporter').style.display='none'">Fermer</div>
+
+    <div class="exporter" style="background: #395E8A;;" onclick="startexportVariable()">exporter et
+      déposer<br>au format systems</div>
+
+    <div class="exporter" style="background:#558236; ;margin-left:100px;" onclick="startexport()">
+      exporter<br>au
+      format *.csv</div>
+
+  </div>
+
+  <div id="window importer" style="position:absolute;top:0px;left: 0px;bottom: 0px;right: 0px;background: rgba(0, 0,0,0.7);display: none;justify-content: center;
+  align-items: center;
+  text-align: justify;color:white;z-index: 200000000000000;">
+    <div style="position: absolute;top:10px;right: 10px;cursor: pointer;"
+      onclick="document.getElementById('window importer').style.display='none'">Fermer</div>
+
+
+
+
+    <div class="exporter" style="position:absolute;left:20%;top:30%;background : #385D8A;border-radius: 50%;">
+      importer une<br>VARIABLE<br> systems
+    </div>
+    <div class="exporter" style="position:absolute;left:20%;top:30%;background : none;">
+      <input onchange=" readVariableFile(this)" type="file" accept=".sytx"
+        style="position:relative;top:0px;left:0px; width: 100%;height: 100%;opacity: 0.01;cursor: pointer;background: greenyellow;top:0px;left:0px;">
+    </div>
+
+    <div class="exporter"
+      style="position:absolute;left:35%;top:30%;background : rgba(235, 20, 20, 1);border-radius: 50%;">
+      importer une<br>FONCTION<br> systems
+    </div>
+    <div class="exporter" style="position:absolute;left:35%;top:30%;background : none;">
+      <input onchange=" readSystemFile(this)" type="file" accept=".tstx" style=" position:relative;top:0px;left:0px; width: 100%;height: 100%;opacity: 0.01;cursor: pointer;background:
+        greenyellow;top:0px;left:0px;">
+    </div>
+
+
+    <div class="exporter" style="position:absolute;left:55%;top:30%;background : #558236;">
+      importer<br>au format *.csv
+    </div>
+    <div class="exporter" style="position:absolute;left:55%;top:30%;background : none;">
+      <input onchange=" readDataFile(this)" type="file" accept=".csv"
+        style="position:relative;top:0px;left:0px; width: 100%;height: 100%;opacity: 0.01;cursor: pointer;background: greenyellow;top:0px;left:0px;">
+    </div>
+
+    <div class="exporter" style="position:absolute;left:75%;top:30%;background : gray;"
+      onclick="document.getElementById('import presse-papier container').style.display='block';">
+      importer<br>le presse-papier
+    </div>
+
+    <div style="position: absolute;top:10%;left:10%;right: 10%;bottom: 10%;display: none;"
+      id="import presse-papier container">
+      <div class="times" onclick="document.getElementById('import presse-papier container').style.display='none';">
+        &times;</div>
+      <div style="position: absolute;top:30px;right: 0px;bottom: 40px;left: 0px;">
+        <textarea style="width: 100%;height: 100%;" placeholder="Coller le presse-papier"
+          id="applyPressePapier"></textarea>
+      </div>
+      <div style="position: absolute;left: 0px;bottom: 0px;right: 0px;height: 40px;background: #558236;">
+        <button style="width: 100%;" onclick="applyPressePapier()">
+          Appliquer le presse-papier</button>
+      </div>
+
+    </div>
+
+
+
+
+</body>
+<script src="../userScript/userScript.js"></script>
+<script src="toasterscript/integral.js"></script>
+<script src="toasterscript/math.js"></script>
+<script src="toasterscript/greek.js"></script>
+<script>
+  document.addEventListener('keydown', function (event) {
+    // Vérifier si la touche Ctrl (ou Cmd sur Mac) est enfoncée et que la touche "S" est enfoncée en même temps
+    if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+      event.preventDefault(); // Empêche l'action par défaut (par exemple, sauvegarde de la page)
+      saveFile();
+    }
+    if (event.key === 'Delete') {
+      event.preventDefault(); // Empêche l'action par défaut (par exemple, suppression du contenu)
+      supprimerVariable();
+    }
+    if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
+      // event.preventDefault(); // Empêche l'action par défaut (par exemple, sauvegarde de la page)
+      //copyValue();
+    }
+  });
+</script>
+<script>
+
+
+  var ctxk = document.getElementById("graphic").getContext('2d');
+  var graphic = new Chart(ctxk, {
+    type: "bar",
+    data: [], options: {
+      maintainAspectRatio: false,
+      legend: { display: false, position: 'top' },
+      responsive: true,
+      title: {
+        display: false,
+        text: "",
+        fontFamily: "Candara",
+        fontSize: 20,
+        fontWeight: "normal",
+      },
+      scales: {
+        yAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: false,
+              labelString: "kgCO2/an",
+              fontColor: 'white',
+            },
+            gridLines: {
+              color: 'rgba(255,255,255,0.5)',
+              zeroLineColor: "white",
+              zeroLineWidth: 2
+            },
+            ticks: {
+              beginAtZero: true,
+              fontColor: 'white'
+            },
+          }],
+        xAxes: [{
+          ticks: {
+            fontColor: 'white',
+            align: 'right',
+            maxRotation: 0,
+            minRotation: 0,
+            beginAtZero: false,
+          },
+          gridLines: {
+            color: 'gray',
+            display: false,
+          },
+        }]
+
+      },
+    }
+  });
+
+
+  var ctsim = document.getElementById("graphic simulation").getContext('2d');
+  var graphicsimulation = new Chart(ctsim, {
+    type: "line",
+    data: [], options: {
+      maintainAspectRatio: false,
+      legend: { display: false, position: 'top' },
+      responsive: true,
+      title: {
+        display: false,
+        text: "",
+        fontFamily: "Candara",
+        fontSize: 20,
+        fontWeight: "normal",
+      },
+      scales: {
+        yAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: false,
+              labelString: "kgCO2/an",
+              fontColor: 'white',
+            },
+            gridLines: {
+              color: 'rgba(255,255,255,0.5)',
+              zeroLineColor: "red",
+              zeroLineWidth: 3
+            },
+            ticks: {
+              beginAtZero: true,
+              fontColor: 'white',
+
+            },
+          }],
+        xAxes: [{
+          ticks: {
+            fontColor: 'white',
+            align: 'right',
+            maxRotation: 0,
+            minRotation: 0,
+          },
+          gridLines: {
+            color: "transparent",
+            display: true,
+          },
+        }]
+
+      },
+    }
+  });
+
+  var ctdia = document.getElementById("graphic diaporama").getContext('2d');
+  var graphicdiaporama = new Chart(ctdia, {
+    type: "line",
+    data: [], options: {
+      maintainAspectRatio: false,
+      legend: { display: false, position: 'top' },
+      responsive: true,
+      title: {
+        display: true,
+        text: "",
+        fontFamily: "Candara",
+        fontSize: 24,
+        fontStyle: "normal",
+        fontColor: 'white',
+        position: 'top',
+      },
+      scales: {
+        yAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: false,
+              labelString: "kgCO2/an",
+              fontColor: 'white',
+            },
+            gridLines: {
+              color: 'rgba(255,255,255,0.5)',
+              zeroLineColor: "red",
+              zeroLineWidth: 3
+            },
+            ticks: {
+              beginAtZero: false,
+              fontColor: 'white',
+
+            },
+          }],
+        xAxes: [{
+          ticks: {
+            beginAtZero: false,
+            fontColor: 'white',
+            align: 'right',
+            maxRotation: 0,
+            minRotation: 0,
+          },
+          gridLines: {
+            color: "transparent",
+            display: true,
+          },
+        }]
+
+      },
+    }
+  });
+
+  function drawchart(Chart, data, bckcolor, labels, type, lgd) {
+    // Interpolation
+    var sz = size(data)
+    if (sz[0] == 1 && sz[1] > 1000 && type != 'console') {
+      data = interpolate(data, 1000)
+      var labels = [];
+      for (u = 0; u < data.length; u++) {
+        labels.push('');
+      }
+    }
+    if (sz[0] > 1 && data[0].length > 1000 && type != 'console') {
+      var newdata = [];
+      for (var i = 0; i < data.length; i++) {
+        newdata.push(interpolate(data[i], 1000));
+      }
+      data = newdata;
+      var labels = [];
+      for (u = 0; u < data[0].length; u++) {
+        labels.push('');
+      }
+    }
+
+
+    if (type == 'line' || type == 'bar' || type == 'area') {
+      document.getElementById('console container').style.display = 'none';
+      document.getElementById('graphic').style.display = 'block';
+      document.getElementById('graphic text').innerHTML = '';
+      var bckcolor = 'rgba(0,0,0,0)';
+      Chart.config.data.datasets = [];
+      Chart.config.data.labels = [];
+      var sz = size(data);
+      var ptradius = 0;
+
+      if (sz[0] == 1) {
+        var data = [data];
+        var ptradius = 0;
+      }
+      var LineColor = "white";
+      var cptcolor = 15
+      for (var i = 0; i < data.length; i++) {
+        cptcolor = cptcolor + 15;
+        if (cptcolor > 200) {
+          cptcolor = 15;
+        }
+        var LineColor = 'hsl(' + cptcolor + ', 90%, 40%)';
+        if (i == 0 && data.length == 1) { LineColor = "white"; }
+
+        if (type != 'line') {
+          bckcolor = LineColor;
+        }
+        var dt = data[i];
+        var dataSet = {
+          data: dt,
+          borderWidth: 2,
+          borderColor: LineColor,
+          backgroundColor: bckcolor,
+          pointRadius: ptradius,
+        }
+        Chart.config.data.datasets.push(dataSet);
+      }
+
+      if (type == 'area') {
+        type = 'line';
+      }
+
+      Chart.config.data.labels = labels;
+      Chart.config.type = type;
+      Chart.config.options.legend.display = lgd;
+      Chart.update();
+
+    }
+
+    if (type == 'text') {
+      document.getElementById('console container').style.display = 'none';
+      document.getElementById('graphic').style.display = 'none';
+      var sz = size(data);
+      if (sz[0] == 1) {
+        var m = 0;
+        for (var i = 0; i < data.length; i++) {
+          m = m + data[i];
+        }
+        m = m / data.length;
+      }
+      if (sz[0] > 1) {
+        var m = 0;
+        for (var i = 0; i < data.length; i++) {
+          for (var j = 0; j < data[i].length; j++) {
+            m = m + data[i][j];
+          }
+        }
+        m = m / (sz[0] * sz[1]);
+      }
+
+      if (data.length == 1) { m = '&equals; ' + Math.round(100 * m) / 100; } else {
+        m = '&#x2248; ' + Math.round(100 * m) / 100;
+      }
+      document.getElementById('graphic text').innerHTML = m + ' ' + document.getElementById('unite').value;
+
+      var variable = document.getElementById('styloUp').value;
+      if (sz[0] == 1 && sz[1] == 1 && document.getElementById(variable).state == 'exogene') {
+        document.getElementById('graphic text').style.cursor = 'pointer';
+      } else {
+        document.getElementById('graphic text').style.cursor = 'default';
+      }
+    }
+    if (type == 'console') {
+      document.getElementById('console container').style.display = 'block';
+      document.getElementById('graphic').style.display = 'none';
+      document.getElementById('graphic text').innerHTML = '';
+      document.getElementById('console value').value = data2str(data);
+    }
+  }
+
+  function drawchartdiaporama(Chart, data, type, unite) {
+    if (type == 'text') {
+      document.getElementById('console diaporama').style.display = 'none';
+      document.getElementById('graphic diaporama').style.display = 'none';
+      document.getElementById('diaporama text graphic').style.opacity = 1;
+
+      if (Array.isArray(data) == false) { data = [data]; }
+      var sz = size(data);
+      if (sz[0] == 1) {
+        var m = 0;
+        for (var i = 0; i < data.length; i++) {
+          m = m + data[i];
+        }
+        m = m / data.length;
+      }
+
+      if (sz[0] > 1) {
+        var m = 0;
+        for (var i = 0; i < data.length; i++) {
+          for (var j = 0; j < data[i].length; j++) {
+            m = m + data[i][j];
+          }
+        }
+        m = m / (sz[0] * sz[1]);
+      }
+
+      if (data.length == 1) { m = '&equals; ' + Math.round(100 * m) / 100; } else {
+        m = '&#x2248; ' + Math.round(100 * m) / 100;
+      }
+      document.getElementById('diaporama text graphic').innerHTML = m + ' ' + unite;
+
+    }
+
+
+    if (type != 'text' && type != 'console') {
+      document.getElementById('console diaporama').style.display = 'none';
+      document.getElementById('diaporama text graphic').style.opacity = 0;
+      document.getElementById('diaporama text graphic').innerHTML = '';
+
+      document.getElementById('graphic diaporama').style.display = 'block';
+      var ptradius = 0;
+      if (Array.isArray(data) == false) {
+        data = [data];
+        var ptradius = 5;
+      }
+      var bckcolor = 'rgba(0,0,0,0)';
+
+      Chart.config.data.datasets = [];
+      Chart.config.data.labels = [];
+      var sz = size(data);
+      if (sz[0] == 1) {
+        var labels = [];
+        for (u = 0; u < data.length; u++) {
+          labels.push('');
+        }
+        var data = [data];
+      }
+      if (sz[0] > 1) {
+        var labels = [];
+        for (u = 0; u < data[0].length; u++) {
+          labels.push('');
+        }
+      }
+
+      var LineColor = "white";
+      var cptcolor = 15;
+
+
+      for (var i = 0; i < data.length; i++) {
+        cptcolor = cptcolor + 15;
+        if (cptcolor > 200) {
+          cptcolor = 15;
+        }
+        var LineColor = 'hsl(' + cptcolor + ', 90%, 40%)';
+        if (i == 0 && data.length == 1) { LineColor = "white"; }
+
+        if (type != 'line') {
+          bckcolor = LineColor;
+        }
+        var dt = data[i];
+        var dataSet = {
+          data: dt,
+          borderWidth: 2,
+          borderColor: LineColor,
+          backgroundColor: bckcolor,
+          pointRadius: ptradius,
+        }
+        Chart.config.data.datasets.push(dataSet);
+      }
+      if (type == 'area') {
+        type = 'line';
+      }
+
+      Chart.config.data.labels = labels;
+      Chart.config.type = type;
+      Chart.config.options.legend.display = false;
+      Chart.config.options.title.text = unite;
+
+      Chart.update();
+    }
+
+    if (type == "console") {
+      document.getElementById('console diaporama').style.display = 'block';
+      document.getElementById('graphic diaporama').style.display = 'none';
+      document.getElementById('diaporama text graphic').style.opacity = 0;
+      document.getElementById('diaporama text graphic').innerHTML = '';
+      document.getElementById('console value diaporama').value = data2str(data);
+
+    }
+
+  }
+</script>
+<script>
+
+  var linkLimite = [0, 600];
+  var lastX = 0;
+
+  var allVariable = [];
+  var allLink = [];
+  var allSystem = {
+    "id": "1",
+    "name": '',
+    "definition": '',
+    "note": '',
+    "iframe": '',
+    "source": '',
+    "equation": '\color{red}{\omega}=\mathrm{besoin}(i,h,\color{blue}{sigma})',
+  };
+
+  const div = document.getElementById("body");
+  div.addEventListener("contextmenu", (e) => { e.preventDefault() });
+
+  drawsystem()
+  setsystem()
+  document.getElementById('welcome').style.bottom = '100%'
+  document.getElementById('welcome').style.top = '-100%';
+  document.getElementById('welcome').style.opacity = 0.6;
+  setTimeout(() => {
+    document.getElementById('welcome').style.display = 'none';
+  }, "1000")
+
+
+  function setSystemPropertie() {
+    // Limite la saisie a des minuscules
+    allSystem.name = document.getElementById("system.name").value.toLowerCase();
+    allSystem.name = allSystem.name.replace(/\ /g, "")
+    var idletter = isletter(allSystem.name);
+    var nameS = '';
+    var strError = ''
+    for (var l = 0; l < idletter.length; l++) {
+      if (idletter[l] == true) {
+        nameS += allSystem.name[l];
+      } else {
+        strError += '"' + allSystem.name[l] + '" ';
+      }
+    }
+    if (strError.length > 0) {
+      alert('Le ou les caractères ' + strError + ' ne sont pas valides dans une fonction (informatique).')
+    }
+    allSystem.name = nameS;
+    document.getElementById("system.name").value = nameS;
+
+    //
+
+    var exo = ''; var vr = ''; var fin = '';
+    var nf = 0;
+    for (var u = 0; u < allVariable.length; u++) {
+      vr = allVariable[u].name;
+      if (isgreek(vr)) { vr = '\\' + vr }
+      if (allVariable[u].state == 'exogene') {
+        exo = exo + '\\color{#385D8A}{' + vr + '_{' + allVariable[u].indice + '}},';
+      }
+      if (allVariable[u].state == 'finalite') {
+        fin = fin + '\\color{red}{' + vr + '_{' + allVariable[u].indice + '}},';
+        nf = nf + 1;
+      }
+    }
+    var strexo = '';
+    for (var u = 0; u < exo.length - 1; u++) {
+      strexo = strexo + exo[u];
+    }
+    var strfin = '';
+
+    for (var u = 0; u < fin.length - 1; u++) {
+      strfin = strfin + fin[u];
+    }
+    if (nf > 1) {
+      strfin = '[' + strfin + ']';
+    }
+
+    try {
+      var content = strfin + '=' + '\\mathrm{' + allSystem.name + '}\\left(' + strexo + '\\right)';
+      //var content = str + '\\cos(\\omega)' + Math.random() + '\\right)';
+      var math = MathJax.Hub.getAllJax("titre")[0];
+      MathJax.Hub.Queue(["Text", math, content]);
+    } catch {
+      //document.getElementById('titre').innerHTML = strfin + '= ' + allSystem.name + '(' + strexo + ')';
+    }
+    allSystem.definition = document.getElementById("system.definition").value;
+    allSystem.note = document.getElementById("system.note").value;
+    allSystem.iframe = document.getElementById("system.iframe").value;
+    allSystem.source = document.getElementById("system.source").value;
+  }
+
+
+  function drawsystem() {
+    var strdiv = '<div  style="border:0px solid silver;position: absolute;left:0px;top:0px;width:900px;height: 620px;background: none;border-radius: 10px;"'
+      + 'id="noLink" onclick="setsystem()" oncontextmenu="displayAjouter(event)"> </div>';
+
+    //var strhtml = document.getElementById('window').innerHTML;
+    var strhtml = strdiv;
+    var str
+    var idr
+    var xr
+    var name
+    // dessine les variables
+    for (var u = 0; u < allVariable.length; u++) {
+      idr = allVariable[u].id;
+      xr = allVariable[u].left;
+      yr = allVariable[u].top;
+      name = allVariable[u].name
+      str = '<div class="draggable" id=\'' + idr + '\' style="left:' + xr + 'px;top:' + yr + 'px;background: #385D8A;" value=0 '
+        + ' onmousedown = "setVariable(\'' + idr + '\')" name = "variable" oncontextmenu="displaySupprimer(event)">'
+        + '<div id="name:' + idr + '" class="name"> M </div>'
+        + '</div >';
+      strhtml = strhtml + str;
+    }
+
+    // dessines les links
+    var strlink = '';
+    var strpoint = '';
+
+    var nlk;
+    for (var u = 0; u < allLink.length; u++) {
+      nlk = allLink[u];
+      strlink = strlink +
+        '<canvas width="900" height="620" style="position: absolute;left:0px;top:0px;background:none;" id="' + nlk + '"></canvas>'
+      strpoint = strpoint +
+        '<div class="linkPoint" id="linkPoint:' + nlk + '" onclick="deletelink(\'' + nlk + '\')"></div>';
+    }
+    document.getElementById('window').innerHTML = strlink + strhtml + strpoint;
+    setPropertie()
+    movelink()
+    document.getElementById("system.definition").value = allSystem.definition;
+    document.getElementById("system.note").value = allSystem.note;
+    document.getElementById("system.iframe").value = allSystem.iframe;
+    document.getElementById("system.source").value = allSystem.source;
+  }
+
+  function setPropertie() {
+    var vr = '';
+    for (var u = 0; u < allVariable.length; u++) {
+      var id = allVariable[u].id;
+
+      var sz = size(allVariable[u].value);
+      document.getElementById(id).name = allVariable[u].name;
+      document.getElementById(id).min = allVariable[u].min;
+      document.getElementById(id).max = allVariable[u].max;
+      document.getElementById(id).indice = allVariable[u].indice;
+      document.getElementById(id).state = allVariable[u].state;
+      document.getElementById(id).value = allVariable[u].value;
+      document.getElementById(id).graphic = allVariable[u].graphic;
+      document.getElementById(id).code = allVariable[u].code;
+      document.getElementById(id).type = allVariable[u].type;
+      document.getElementById(id).i = allVariable[u].i;
+      document.getElementById(id).j = allVariable[u].j;
+      document.getElementById(id).unite = allVariable[u].unite;
+      document.getElementById(id).definition = allVariable[u].definition;
+      document.getElementById(id).formule = allVariable[u].formule;
+      document.getElementById(id).note = allVariable[u].note;
+      document.getElementById(id).source = allVariable[u].source;
+      document.getElementById(id).iframe = allVariable[u].iframe;
+      document.getElementById(id).image = allVariable[u].image;
+
+
+      vr = allVariable[u].name;
+      if (isgreek(vr)) { vr = '&' + vr + ';' }
+      document.getElementById('name:' + id).innerHTML = vr + '<sub>' + allVariable[u].indice + '</sub>';
+    }
+    setState()
+  }
+  function updateName() {
+
+    // Enlève les blancs
+    for (var u = 0; u < document.getElementById('name').value.length; u++) {
+      document.getElementById('name').value = document.getElementById('name').value.replace(' ', '');
+    }
+    for (var u = 0; u < document.getElementById('indice').value.length; u++) {
+      document.getElementById('indice').value = document.getElementById('indice').value.replace(' ', '');
+    }
+
+    var variable = document.getElementById('styloUp').value;
+    var oldname = document.getElementById(variable).name + document.getElementById(variable).indice;
+    var indice = document.getElementById('indice').value;
+    var nindice = '';
+    for (var u = 0; u < indice.length; u++) {
+      if (indice[u] != ' ') { nindice = nindice + indice[u] }
+    }
+
+    var newname = document.getElementById('name').value + nindice;
+    var existe = false;
+    var error = '';
+    // Vérifie que le nom n'est pas vide
+    if (newname.length == 0) {
+      existe = true;
+      error = 'Le nom n\'est pas valide.'
+    }
+    // Vérifie que le nom n'existe pas déjà
+    for (var u = 0; u < allVariable.length; u++) {
+      var id = allVariable[u].id;
+      var nm = document.getElementById(id).name + document.getElementById(id).indice;
+      if (id != variable && nm == newname) {
+        existe = true;
+        error = newname + ' existe déja.'
+      }
+    }
+    // Vérifie que le format des indices est le bon
+    if (nindice.length > 2) {
+      error = error + '\n La variable ne peut posséder plus de 2 indices.';
+      existe = true;
+    }
+    if (nindice.length == 2 && nindice[0] == nindice[1]) {
+      error = error + '\n Les 2 indices ne peuvent être égaux.';
+      existe = true;
+    }
+
+
+    if (existe == false) {
+      for (var u = 0; u < allVariable.length; u++) {
+        var id = allVariable[u].id;
+        var formule = document.getElementById(id).formule;
+        var newformule = replaceString(formule, oldname, newname);
+        var code = document.getElementById(id).code;
+        var newcode = replaceString(code, oldname, newname);
+        allVariable[u].formule = newformule;
+        allVariable[u].code = newcode;
+        if (id == variable) {
+          document.getElementById('formule').value = newformule;
+          document.getElementById('code').value = newcode;
+        }
+      }
+      getPropertie()
+    } else {
+      alert(error)
+      document.getElementById('name').value = document.getElementById(variable).name;
+      document.getElementById('indice').value = document.getElementById(variable).indice;
+
+    }
+  }
+  function getPropertie() {
+    var variable = document.getElementById('styloUp').value;
+    var k = -1;
+    for (var u = 0; u < allVariable.length; u++) {
+      if (allVariable[u].id == variable) {
+        k = u;
+        break;
+      }
+    }
+    var oldname = '';
+    if (k >= 0) {
+      oldname = allVariable[k].name;
+      allVariable[k].name = document.getElementById('name').value;
+      if (oldname != allVariable[k].name) {
+        //replacestring(k,) à finir pour remplacer le nom dans le code et la formule
+      }
+      allVariable[k].min = Number(document.getElementById('min').value.replace(',', '.'));
+      allVariable[k].max = Number(document.getElementById('max').value.replace(',', '.'));
+      allVariable[k].indice = document.getElementById('indice').value;
+      allVariable[k].graphic = document.getElementById('select graphic').value;
+      allVariable[k].code = document.getElementById('code').value;
+      allVariable[k].type = document.getElementById('select type').value;
+      allVariable[k].i = Number(Math.ceil(document.getElementById('i').value.replace(',', '.')));
+      allVariable[k].j = Number(Math.ceil(document.getElementById('j').value.replace(',', '.')));
+      allVariable[k].unite = document.getElementById('unite').value;
+      allVariable[k].definition = document.getElementById('definition').value;
+      allVariable[k].formule = document.getElementById('formule').value;
+      allVariable[k].note = document.getElementById('note').value;
+      allVariable[k].source = document.getElementById('source').value;
+      allVariable[k].iframe = document.getElementById('iframe').value;
+
+      allVariable[k].value = document.getElementById(allVariable[k].id).value;
+
+      if (isNaN(allVariable[k].min) || isNaN(allVariable[k].max) || isNaN(allVariable[k].i) || isNaN(allVariable[k].j)) {
+        alert("La saisie n'est pas correcte")
+      }
+
+      setPropertie()
+      setVariable(variable)
+    }
+
+
+    setSystemPropertie()
+
+
+  }
+  function setState() {
+
+    let lnk
+    let inp
+    let out
+    let id
+    let mess = '';
+
+    for (var i = 0; i < allVariable.length; i++) {
+      let inp = 0;
+      let out = 0;
+      mess = '';
+      let id = allVariable[i].id;
+      document.getElementById(id).style.background = '#385D8A';
+      document.getElementById(id).state = 'exogene';
+      allVariable[i].state = 'exogene';
+      for (var j = 0; j < allLink.length; j++) {
+        //lnk = getLinkOrigineDestination(allLink[j])
+        lnk = allLink[j].split('-');
+        mess = mess + '/' + lnk;
+        if (id == lnk[0]) { inp = 1; };
+        if (id == lnk[1]) { out = 1; };
+      }
+
+
+      if (inp == 1 && out == 1) {
+        document.getElementById(id).style.background = 'orange';
+        document.getElementById(id).state = 'endogene';
+        allVariable[i].state = 'endogene';
+
+      }
+      if (inp == 0 && out == 1) {
+        document.getElementById(id).style.background = 'red';
+        document.getElementById(id).state = 'finalite';
+        allVariable[i].state = 'finalite';
+      }
+      if (inp == 0 && out == 0) {
+        document.getElementById(id).style.background = 'rgba(150,150,150,0.7)';
+        document.getElementById(id).state = 'exogene';
+      }
+    }
+
+  }
+  function setPosition() {
+    for (var u = 0; u < allVariable.length; u++) {
+      var id = allVariable[u].id;
+      document.getElementById(id).style.left = allVariable[u].left + 'px';
+      document.getElementById(id).style.top = allVariable[u].top + 'px';
+    }
+  }
+  function setValueToVariable() {
+    if (document.getElementById('graphic text').style.cursor == 'pointer') {
+      var variable = document.getElementById('styloUp').value;
+      var obj = document.getElementById(variable);
+      var v = obj.value;
+      var a = prompt('Saisir une valeur de "' + obj.name + obj.indice + '" comprise entre ' + obj.min + ' et ' + obj.max, v);
+
+      if (a != null) {
+        a = parseFloat(a);
+        if (a >= obj.min && a <= obj.max) {
+          obj.value = a;
+          setVariable(variable);
+          getPropertie()
+        } else {
+          alert('La valeur de "' + obj.name + obj.indice + '" doit comprise entre ' + obj.min + ' et ' + obj.max)
+        }
+      }
+    }
+  }
+  function setVariable(variable) {
+    var obj = document.getElementById(variable);
+
+    document.getElementById('ajouter variable').style.display = 'none';
+    document.getElementById('supprimer variable').style.display = 'none';
+    document.getElementById('ajouter code').style.display = 'none';
+
+    document.getElementById('more information').scrollTo({
+      top: 0,
+      left: 0,
+    });
+    document.getElementById('calculer').value = variable;
+
+    var vr = obj.name
+    if (isgreek(vr)) { vr = '&' + vr + ';' }
+    document.getElementById('button calculer').innerHTML = vr + '<sub>' + obj.indice + '</sub>';
+    document.getElementById('button recalculer').innerHTML = vr + '<sub>' + obj.indice + '</sub>';
+
+    var topcode = parseFloat(document.getElementById('code').style.top) + parseFloat(document.getElementById('code').style.height);
+    document.getElementById('calculer tout').style.display = 'none';
+    document.getElementById('simuler').style.display = 'none';
+    document.getElementById('exporter').style.display = 'block';
+
+    if (obj.state == 'exogene') {
+      document.getElementById('more information').style.top = '190px';
+      document.getElementById('formule').style.display = 'none';
+      document.getElementById('equation').style.display = 'none';
+
+      document.getElementById('code').style.display = 'none';
+      document.getElementById('calculer').style.display = 'none';
+
+      document.getElementById('recalculer').style.display = 'block';
+      document.getElementById('importer').style.display = 'block';
+      document.getElementById('select type').style.display = 'block';
+
+      document.getElementById('min').disabled = false;
+      document.getElementById('max').disabled = false;
+      document.getElementById('i').disabled = false;
+      document.getElementById('j').disabled = false;
+
+
+    } else {
+      document.getElementById('more information').style.top = (topcode + 10) + 'px';
+      document.getElementById('formule').style.display = 'block';
+      document.getElementById('equation').style.display = 'block';
+
+      document.getElementById('code').style.display = 'block';
+      document.getElementById('calculer').style.display = 'block';
+      document.getElementById('recalculer').style.display = 'none';
+      document.getElementById('importer').style.display = 'none';
+      document.getElementById('select type').style.display = 'none';
+
+      document.getElementById('min').disabled = true;
+      document.getElementById('max').disabled = true;
+      document.getElementById('i').disabled = true;
+      document.getElementById('j').disabled = true;
+    }
+
+
+
+    linkLimite = getLimite(variable);
+
+
+    // Positionne les stylos qui dessine les links
+    var xx = parseFloat(obj.style.left);
+    var yy = parseFloat(obj.style.top);
+    document.getElementById('styloUp').style.display = 'block';
+    document.getElementById('styloUp').style.left = (xx + 20) + 'px';
+    document.getElementById('styloUp').style.top = (yy - 14) + 'px';
+    document.getElementById('styloDown').style.display = 'block';
+    document.getElementById('styloDown').style.left = (xx + 20) + 'px';
+    document.getElementById('styloDown').style.top = (yy + 52) + 'px';
+
+    document.getElementById('styloUp').value = variable;
+    document.getElementById('styloDown').value = variable;
+
+
+
+    document.getElementById('information variable').style.opacity = 1;
+    document.getElementById('information variable').style.zIndex = 100;
+    document.getElementById('information system').style.opacity = 0;
+    document.getElementById('information system').style.zIndex = 0;
+
+
+    document.getElementById('information').style.background = obj.style.background;
+    document.getElementById('name').style.background = obj.style.background;
+    document.getElementById('indice').style.background = document.getElementById(variable).style.background;
+
+
+    document.getElementById('name').value = obj.name;
+    document.getElementById('indice').value = obj.indice;
+
+    var vIndice = document.getElementById('indice').value.length;
+
+    document.getElementById('i').style.display = 'none';
+    document.getElementById('j').style.display = 'none';
+    document.getElementById('text i').style.display = 'none';
+    document.getElementById('text j').style.display = 'none';
+    if (vIndice > 0) {
+      document.getElementById('i').style.display = 'flex';
+      document.getElementById('text i').style.display = 'flex';
+      document.getElementById('harmoniser').innerHTML = "Appiquer l'indice " + obj.indice;
+    }
+    if (vIndice > 1) {
+      document.getElementById('j').style.display = 'flex';
+      document.getElementById('text j').style.display = 'flex';
+      document.getElementById('harmoniser').innerHTML = "Appiquer les indices " + obj.indice[0] + ',' + obj.indice[1];
+    }
+    if (vIndice > 0) {
+      document.getElementById('harmoniser').style.display = 'block';
+    } else {
+      document.getElementById('harmoniser').style.display = 'none';
+    }
+
+    document.getElementById('min').value = obj.min;
+    document.getElementById('max').value = obj.max;
+    document.getElementById('i').value = obj.i;
+    document.getElementById('j').value = obj.j;
+    document.getElementById('unite').value = obj.unite;
+    document.getElementById('definition').value = obj.definition;
+    document.getElementById('formule').value = obj.formule;
+
+    getText()
+    document.getElementById('image').src = obj.image;
+    document.getElementById('note').value = obj.note;
+    document.getElementById('source').value = obj.source;
+    document.getElementById('iframe').value = obj.iframe;
+
+
+    document.getElementById('select graphic').value = obj.graphic;
+    document.getElementById('select type').value = obj.type;
+
+    //
+    var data = obj.value;
+    if (Array.isArray(data) == false) { data = [data]; }
+    //if (data.length > 200) { data = interpolate(data, 200) }
+    lbl = [];
+    var sz = size(data);
+    if (sz[0] == 1) {
+      for (var i = 0; i < data.length; i++) {
+        lbl[lbl.length] = '';
+      }
+    }
+    if (sz[0] > 1) {
+      for (var i = 0; i < data[0].length; i++) {
+        lbl[lbl.length] = '';
+      }
+    }
+
+
+    drawchart(graphic, data, ['red', 'yellow', 'green'], lbl, obj.graphic, false)
+    document.getElementById('code').value = obj.code;
+  }
+  function setsystem() {
+    document.getElementById('styloDown').style.display = 'none';
+    document.getElementById('styloUp').style.display = 'none';
+
+    document.getElementById('ajouter variable').style.display = 'none';
+    document.getElementById('supprimer variable').style.display = 'none';
+    document.getElementById('ajouter code').style.display = 'none';
+
+    document.getElementById('information variable').style.opacity = 0;
+    document.getElementById('information variable').style.zIndex = 0;
+    document.getElementById('information system').style.opacity = 1;
+    document.getElementById('information system').style.zIndex = 100;
+    document.getElementById('information').style.background = '#02354D';
+
+    document.getElementById('calculer tout').style.display = 'block';
+    document.getElementById('simuler').style.display = 'block';
+    document.getElementById('calculer').style.display = 'none';
+    document.getElementById('recalculer').style.display = 'none';
+    document.getElementById('importer').style.display = 'none';
+    document.getElementById('exporter').style.display = 'none';
+
+
+    document.getElementById('system.name').value = allSystem.name;
+    setState()
+    setSystemPropertie()
+    document.title = 'integral | ' + allSystem.name;
+  }
+
+  function movelink() {
+
+    for (var u = 0; u < allLink.length; u++) {
+      var link = allLink[u];
+      var ij = getLinkOrigineDestination(link);
+      var xi = parseFloat(document.getElementById(ij[0]).style.left);
+      var yi = parseFloat(document.getElementById(ij[0]).style.top);
+
+      var xl = parseFloat(document.getElementById(ij[1]).style.left);
+      var yl = parseFloat(document.getElementById(ij[1]).style.top);
+
+
+      var lkpt = document.getElementById('linkPoint:' + link);
+      lkpt.style.left = (xi - (xi - xl) / 2 + 19) + 'px';
+      lkpt.style.top = (yi - (yi - yl) / 2 + 20) + 'px';
+      drawlink(document.getElementById(link), xl + 25, yl + 50, xi - 9, yi)
+    }
+  }
+  function getLimite(variable) {
+    var vin = [];
+    var tmax = 0;
+    var tmin = 540;
+    var tp = 0;
+    var tm = 0;
+    for (var u = 0; u < allLink.length; u++) {
+      lnk = allLink[u].split('-');
+      if (lnk[0] == variable) {
+        tp = parseFloat(document.getElementById(lnk[1]).style.top);
+        if (tp > tmax) { tmax = tp; }
+      }
+      if (lnk[1] == variable) {
+        tm = parseFloat(document.getElementById(lnk[0]).style.top);
+        if (tm < tmin) { tmin = tm; }
+      }
+
+    }
+    if (tmax == 0) { tmax = 20 } else { tmax = tmax + 2; }
+    tmax = [tmax, tmin - 2];
+    return tmax
+  }
+  function startLink() {
+    linkLimite = [20, 600];
+
+  }
+  function drawNewLink(link) {
+    var variable = document.getElementById(link).value;
+    var xi = parseFloat(document.getElementById(link).style.left);
+    var yi = parseFloat(document.getElementById(link).style.top);
+
+    var xl = parseFloat(document.getElementById(variable).style.left);
+    var yl = parseFloat(document.getElementById(variable).style.top);
+    if (link == 'styloDown') { yl = yl + 50; }
+    drawlink(document.getElementById('newLink'), xl + 22, yl, xi - 28, yi)
+  }
+  function getNewLink() {
+    ncanvas = document.getElementById('newLink');
+    var ctx = ncanvas.getContext("2d");
+    ctx.clearRect(0, 0, ncanvas.width, ncanvas.height);
+
+    var variable = document.getElementById('styloUp').value;
+    var i = variable;
+    var yi = parseFloat(document.getElementById(variable).style.top);
+    setVariable(variable)
+    var idj = inpolygon(lastX, lastY);
+    // Regarde si le stylo est dans une variable
+    // Compare les positions des variables
+    if (idj != '') {
+      yj = parseFloat(document.getElementById(idj).style.top);
+    } else { yj = NaN; }
+    if (yi > yj) {
+      var nlk = variable + '-' + idj;
+    }
+    if (yi < yj) {
+      var nlk = idj + '-' + variable;
+    }
+    var existe = false;
+
+
+    // Vérifie que le lien n'existe pas déjà
+    for (var u = 0; u < allLink.length; u++) {
+      if (allLink[u] == (variable + '-' + idj) || allLink[u] == (idj + '-' + variable)) {
+        existe = true;
+        alert('Cette relation existe déjà.')
+      }
+    }
+    if (yi == yj) {
+      idj = '?';
+      existe = true;
+      alert('Les variables ne doivent pas être alignées horizontalement.')
+    }
+    var strhtml = document.getElementById('window').innerHTML;
+
+    if (idj != '' && existe == false) {
+      allLink[allLink.length] = nlk;
+      // LastX représente la derniere position du stylo
+      strhtml = '<canvas width="900" height="620" style="position: absolute;left:0px;top:0px;background:none;" id="' + nlk + '"></canvas>'
+        + strhtml
+        + '<div class="linkPoint" id="linkPoint:' + nlk + '" onclick="deletelink(\'' + nlk + '\')"></div>';
+    }
+    document.getElementById('window').innerHTML = strhtml;
+    movelink()
+    setPropertie()
+    setVariable(variable)
+    setSystemPropertie()
+  }
+  function deletelink(lnk) {
+    var idm = lnk.split('-');
+
+    if (confirm("Supprimer la relation entre " + document.getElementById(idm[1]).name + document.getElementById(idm[1]).indice
+      + ' et ' + document.getElementById(idm[0]).name + document.getElementById(idm[0]).indice + " ?") == true) {
+      supprimerLink(lnk)
+      setPropertie()
+      var variable = document.getElementById('styloUp').value;
+      setVariable(variable)
+      setSystemPropertie()
+    }
+  }
+  function supprimerLink(lnk) {
+    var newAllink = [];
+    for (var u = 0; u < allLink.length; u++) {
+      if (allLink[u] != lnk) {
+        newAllink.push(allLink[u]);
+      }
+    }
+    document.getElementById(lnk).style.display = 'none';
+    document.getElementById(lnk).id = 'deleted link';
+    document.getElementById('linkPoint:' + lnk).style.display = 'none';
+    document.getElementById('linkPoint:' + lnk).id = 'deleted linkPoint'
+    allLink = newAllink;
+    //setState()
+
+  }
+
+  function inpolygon(x, y) {
+    var obj = document.getElementsByName('variable');
+    var idx = '';
+    for (var u = 0; u < obj.length; u++) {
+      var xu = parseFloat(obj[u].style.left);
+      var yu = parseFloat(obj[u].style.top);
+
+      if (x > xu && x < (xu + 70) && y > yu && y < (yu + 70)) {
+        idx = obj[u].id;
+      }
+    }
+    return idx
+  }
+  function getLinkOrigineDestination(id) {
+    var k = 0;
+    var str = '';
+    var ij = [];
+    var id = id + '-';
+    for (var u = 0; u < id.length; u++) {
+      if (id[u] == '-') {
+        ij[k] = str;
+        k = k + 1;
+        str = '';
+      } else {
+        str = str + id[u];
+      }
+    }
+    ij = id.split('-');
+    return ij;
+
+  }
+  function drawlink(canvas, xi, yi, xj, yj) {
+    const w = parseFloat(canvas.width);
+    const h = parseFloat(canvas.height);
+    var wl = xj - xi + 35;
+    var hl = yj - yi;
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "gray";
+    ctx.beginPath();
+    ctx.moveTo(xi, yi);
+    ctx.bezierCurveTo(xi, yi + 0.5 * hl, xi + wl, yi + 0.5 * hl, xi + wl, yi + hl);
+    ctx.stroke();
+  }
+
+  function displayAjouter(event) {
+    document.getElementById('ajouter variable').style.display = 'block';
+    document.getElementById('supprimer variable').style.display = 'none';
+    document.getElementById('ajouter code').style.display = 'none';
+
+
+    let x = event.clientX;
+    let y = event.clientY;
+    document.getElementById('ajouter variable').style.left = x + 'px';
+    document.getElementById('ajouter variable').style.top = y + 'px';
+  }
+  function displaySupprimer(event) {
+    document.getElementById('supprimer variable').style.display = 'block';
+    document.getElementById('ajouter variable').style.display = 'none';
+    document.getElementById('ajouter code').style.display = 'none';
+
+
+    let x = event.clientX;
+    let y = event.clientY;
+    document.getElementById('supprimer variable').style.left = x + 'px';
+    document.getElementById('supprimer variable').style.top = y + 'px';
+  }
+
+  function displayCodeMenu(event) {
+
+    document.getElementById('ajouter code').style.display = 'block';
+    let x = event.clientX;
+    let y = event.clientY;
+    document.getElementById('ajouter code').style.left = x + 'px';
+    document.getElementById('ajouter code').style.top = y + 'px';
+
+  }
+  function getSystemAction() {
+    document.getElementById('ajouter variable').style.display = 'none';
+    document.getElementById('ajouter code').style.display = 'none';
+
+    var wh = document.getElementById('ajouter variable').value;
+    if (wh == 'ajouter') { ajouterVariable() };
+    if (wh == 'calculer tout') { calculSystem() };
+    if (wh == 'simuler') {
+      setsystem()
+      simuler()
+    };
+    if (wh == 'editCode') {
+      var error = calculSystem()
+      if (error == 0) {
+        var text = writeJsCode();
+        copyToClipboard(text)
+        alert('Le script a été copié et peut-être collé dans userScript.js.\n\n'
+          + 'Si vous désirez l\'appliquer maintenant, vous devez suivre les étapes suivantes :\n'
+          + '1- Coller le script dans le fichier userScript.js\n'
+          + '2- Enregistrer votre fichier.\n'
+          + '3- Rafraichir cette page.')
+      }
+    }
+  }
+
+
+  function ajouterVariable() {
+    document.getElementById('ajouter variable').style.display = 'none';
+    document.getElementById('ajouter code').style.display = 'none';
+
+
+    var add = document.getElementById('ajouter variable').value;
+    var xr = parseFloat(document.getElementById('ajouter variable').style.left);
+    var yr = parseFloat(document.getElementById('ajouter variable').style.top);
+    var idr = Date.now();
+    var strhtml = document.getElementById('window').innerHTML;
+    var str = '<div class="draggable" id=\'' + idr + '\' style="left:' + xr + 'px;top:' + yr + 'px;background: #385D8A;" value=0 '
+      + ' onmousedown = "setVariable(\'' + idr + '\')" name = "variable" oncontextmenu="displaySupprimer(event)">'
+      + '<div id="name:' + idr + '" class="name"> M </div>'
+      + '</div >';
+
+    // Cherche une lettre disponible
+    var alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var a1 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r'];
+    var a2 = [];
+    for (var i = 0; i < allVariable.length; i++) {
+      a2.push(allVariable[i].name);
+      a2.push(allVariable[i].indice);
+
+    }
+    var result = [];
+    for (var i = 0; i < a1.length; i++) {
+      if (a2.indexOf(a1[i]) === -1) {
+        result.push(a1[i]);
+      }
+    }
+    var newname = result[0];
+    var newdate = new Date().toGMTString();
+
+    //allVariable[allVariable.length] = [idr, newname, 0, 1, '', 'exogene'];
+    allVariable[allVariable.length] = {
+      "id": idr,
+      "name": newname,
+      "min": 0,
+      "max": 1,
+      "indice": '',
+      "state": 'exogene',
+      "left": xr,
+      "top": yr,
+      "value": Math.random(),
+      "graphic": 'text',
+      "code": '',
+      "type": 'reel',
+      "i": 24,
+      "j": 3,
+      "unite": '',
+      "definition": '',
+      "formule": newname + ' = ?',
+      "note": '',
+      "source": '',
+      "iframe": '',
+      "date": '\'' + newdate + '\'',
+      "image": "",
+    };
+
+    document.getElementById('window').innerHTML = strhtml + str;
+
+    setPropertie()
+    movelink()
+    setVariable(idr)
+
+  }
+  function getVariableAction() {
+    document.getElementById('supprimer variable').style.display = 'none';
+    var wh = document.getElementById('supprimer variable').value;
+    if (wh == 'supprimer') { supprimerVariable() };
+    if (wh == 'harmoniser') { harmoniser() };
+    if (wh == 'copier') { copyValue() }
+  }
+  function copyValue(K) {
+    if (K == null) {
+      var variable = document.getElementById('styloUp').value;
+      var obj = document.getElementById(variable);
+      var value = obj.value;
+      try {
+        var text = '';
+        var sz = size(value);
+        if (sz[0] == 1 && sz[1] == 1) { value = [value]; }
+
+        if (sz[0] > 1) {
+          for (var i = 0; i < value.length; i++) {
+            for (var j = 0; j < value[i].length; j++) {
+              var v = value[i][j];
+              v = v.toString();
+              text += v + '\t';
+            }
+            text += '\n'
+          }
+        } else {
+          for (var i = 0; i < value.length; i++) {
+            var v = value[i];
+            v = v.toString()
+            text += v + '\t';
+          }
+        }
+        text = text.replace(/\./g, ",");
+      } catch (ex) {
+        alert(ex.message)
+      }
+
+      copyToClipboard(text)
+      alert('Les valeurs de ' + obj.name + obj.indice + ' ont été copiées dans le presse-papier.')
+    }
+  }
+  function getCodeAction() {
+    document.getElementById('ajouter code').style.display = 'none';
+    var wh = document.getElementById('ajouter code').value;
+    if (wh == 'coller formule') { pasteFormule() };
+    if (wh == 'ajouter boucle') { proposeCode() };
+  }
+  function pasteFormule() {
+    var variable = document.getElementById('styloUp').value;
+    var obj = document.getElementById(variable);
+    str = obj.formule;
+    for (var s = 0; s < str.length; s++) {
+      str = str.replace('^', '**');
+    }
+    var a = confirm('Ajouter le code suivant :\n\n' + str);
+    if (a == true) {
+      obj.code = str + ' ;';
+      setVariable(variable)
+      getPropertie()
+    }
+
+  }
+  function proposeCode() {
+    var variable = document.getElementById('styloUp').value;
+    var obj = document.getElementById(variable);
+    var vout = obj.name + obj.indice
+    var vin = [];
+    var idin = [];
+    var lnk = '';
+    var boucle = '';
+    for (var u = 0; u < allLink.length; u++) {
+      lnk = allLink[u].split('-');
+      if (lnk[1] == variable) {
+        vin.push(document.getElementById(lnk[0]).name + document.getElementById(lnk[0]).indice);
+        idin.push(lnk[0]);
+        if (document.getElementById(lnk[0]).indice == obj.indice) { boucle = document.getElementById(lnk[0]).name + document.getElementById(lnk[0]).indice; }
+      }
+    }
+    let position = obj.formule.search("=");
+    var strformule = '';
+    for (var u = position + 1; u < obj.formule.length; u++) {
+      strformule = strformule + obj.formule[u];
+    }
+    if (obj.indice.length == 1 && boucle.length > 0) {
+      for (var u = 0; u < vin.length; u++) {
+        if (document.getElementById(idin[u]).indice == obj.indice) {
+          strformule = replaceString(strformule, vin[u], vin[u] + '[' + obj.indice + ']');
+        }
+      }
+    }
+    if (obj.indice.length == 2 && boucle.length > 0) {
+      for (var u = 0; u < vin.length; u++) {
+        if (document.getElementById(idin[u]).indice == obj.indice) {
+          strformule = replaceString(strformule, vin[u], vin[u] + '[' + obj.indice[0] + ']' + '[' + obj.indice[1] + ']');
+        }
+      }
+    }
+
+    var str = "?";
+
+    if (obj.indice.length == 1 && boucle.length > 0) {
+      var str = vout + ' = [];\n'
+        + 'for (var ' + obj.indice + ' = 0 ; ' + obj.indice + ' < ' + boucle + '.length ; ' + obj.indice + '++ ){\n'
+        + '    ' + obj.name + obj.indice + '.push(' + strformule + ');\n'
+        + '}';
+    }
+    if (obj.indice.length == 2 && boucle.length > 0) {
+      var str = vout + ' = [];\n'
+        + 'for (var ' + obj.indice[0] + ' = 0 ; ' + obj.indice[0] + ' < ' + boucle + '.length ; ' + obj.indice[0] + '++ ){\n'
+        + '    var ' + vout + '_' + obj.indice[0] + '= [];\n'
+        + '    for (var ' + obj.indice[1] + ' = 0 ; ' + obj.indice[1] + ' < ' + boucle + '[0].length ; ' + obj.indice[1] + '++ ){\n'
+        + '        ' + vout + '_' + obj.indice[0] + '.push(\n\n'
+        + '            ' + strformule + '\n\n'
+        + '                    );\n'
+        + '    }\n'
+        + '    ' + vout + '.push(' + vout + '_' + obj.indice[0] + ');\n'
+        + '}';
+    }
+    for (var s = 0; s < str.length; s++) {
+      str = str.replace('^', '**');
+    }
+
+    if (str == '?') { alert('Les indices entre "' + vout + '"" et la ou les variables "' + vin + '" ne correspondent pas.') } else {
+      var a = confirm('Coller le code suivant ?\n\n' + str);
+      if (a == true) {
+        obj.code = str;
+        setVariable(variable)
+        getPropertie()
+      }
+    }
+  }
+
+  function supprimerVariable() {
+    var variable = document.getElementById('styloUp').value;
+    document.getElementById('supprimer variable').style.display = 'none';
+
+    if (confirm("Supprimer la variable " + document.getElementById(variable).name + document.getElementById(variable).indice + " ?") == true) {
+      var newAllVariable = [];
+      for (var u = 0; u < allVariable.length; u++) {
+        if (allVariable[u].id != variable) {
+          newAllVariable.push(allVariable[u]);
+        }
+      }
+      document.getElementById(variable).style.display = 'none';
+      document.getElementById(variable).id = 'deleted variable';
+      var link2delete = []
+      for (var u = 0; u < allLink.length; u++) {
+        id = getLinkOrigineDestination(allLink[u]);
+        if (variable == id[0] || variable == id[1]) {
+          link2delete.push(allLink[u])
+        }
+      }
+      for (var u = 0; u < link2delete.length; u++) {
+        supprimerLink(link2delete[u])
+      }
+      // document.getElementById('linkPoint:' + lnk).style.display = 'none';
+      // document.getElementById('linkPoint:' + lnk).id = 'deleted linkPoint'
+      allVariable = newAllVariable;
+
+      setsystem()
+    }
+  }
+  function harmoniser() {
+    // Il faut recalculer avant
+    var error = calculSystem()
+    if (error == 0) {
+      var variable = document.getElementById('styloUp').value;
+      var obj = document.getElementById(variable);
+      var sz = size(obj.value);
+      var allid = [];
+      var allvar = [];
+      for (u = 0; u < allVariable.length; u++) {
+        var id = allVariable[u].id;
+        var newobj = document.getElementById(id);
+        var sznew = size(allVariable[u].value);
+        if (sznew[0] == sz[0] && sznew[1] == sz[1] && id != obj.id) {
+          allid.push(id)
+          allvar.push(newobj.name + newobj.indice)
+        }
+      }
+      if (allid.length > 0) {
+        if (obj.indice.length == 1) {
+          var txt = "Appliquer l'indice \"" + obj.indice + '\" aux vecteurs \"' + allvar + '\" ?';
+        } else {
+          var txt = "Appliquer les indices \"" + obj.indice[0] + ',' + obj.indice[1] + '\" aux matrices \"' + allvar + '\" ?';
+        }
+
+        var cf = confirm(txt);
+        if (cf == true) {
+          var oldnames = [];
+          var newnames = [];
+
+          for (u = 0; u < allVariable.length; u++) {
+            var id = allVariable[u].id;
+            for (k = 0; k < allid.length; k++) {
+              if (id == allid[k]) {
+                oldnames.push(allVariable[u].name + allVariable[u].indice);
+                newnames.push(allVariable[u].name + obj.indice);
+
+                allVariable[u].indice = obj.indice;
+                document.getElementById(id).indice = obj.indice;
+              }
+            }
+          }
+          getPropertie()
+
+          for (u = 0; u < allVariable.length; u++) {
+            var id = allVariable[u].id;
+            var obj = document.getElementById(id);
+            var code = obj.code;
+            var formule = obj.formule;
+            for (k = 0; k < oldnames.length; k++) {
+              code = replaceString(code, oldnames[k], newnames[k]);
+              formule = replaceString(formule, oldnames[k], newnames[k]);
+            }
+            obj.code = code;
+            obj.formule = formule;
+            allVariable[u].code = code;
+            allVariable[u].formule = formule;
+          }
+
+        }
+      }
+    } else {
+      alert('Aucune variable ne possède le même format que ' + obj.name + obj.indice)
+    }
+  }
+
+  // function convertToBase64() {
+  //   var fileInput = document.getElementById('imageInput');
+  //   var previewImage = document.getElementById('image');
+
+  //   if (fileInput.files && fileInput.files[0]) {
+  //     var reader = new FileReader();
+  //     reader.onload = function (e) {
+  //       var base64Image = e.target.result;
+  //       //alert(base64Image); // Affiche la représentation base64 de l'image dans la console
+  //       // Afficher l'image chargée
+  //       previewImage.src = base64Image;
+  //       var variable = document.getElementById('styloUp').value;
+  //       var obj = document.getElementById(variable);
+  //       obj.image = base64Image;
+  //       //alert(dim)
+  //       for (var u = 0; u < allVariable.length; u++) {
+  //         if (allVariable[u].id == variable) {
+  //           allVariable[u].image = obj.image;
+  //         }
+  //       }
+
+  //     };
+
+  //     reader.readAsDataURL(fileInput.files[0]);
+  //   }
+  // }
+  /////////////////////////////////////////////////////////////////////////////////// Traitement image
+  function resizeImage(base64Image, maxDimension) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+
+      // Lorsque l'image est chargée, nous pouvons accéder à ses dimensions
+      img.onload = function () {
+        let width = img.width;
+        let height = img.height;
+
+        // Vérifier si l'une des dimensions dépasse la limite maximale
+        if (width > maxDimension || height > maxDimension) {
+          // Calculer le nouveau rapport largeur-hauteur tout en maintenant les proportions
+          if (width > height) {
+            height = Math.round((height / width) * maxDimension);
+            width = maxDimension;
+          } else {
+            width = Math.round((width / height) * maxDimension);
+            height = maxDimension;
+          }
+        }
+
+        // Créer un canvas pour dessiner l'image redimensionnée
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        // Dessiner l'image redimensionnée sur le canvas
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convertir le canvas en base64
+        const resizedBase64 = canvas.toDataURL('image/jpeg'); // Vous pouvez ajuster le type d'image ici si nécessaire (ex: image/png)
+
+        // Renvoyer l'image redimensionnée en base64
+        resolve(resizedBase64);
+      };
+
+      // Gérer les erreurs de chargement de l'image
+      img.onerror = function () {
+        reject(new Error('Impossible de charger l\'image en base64.'));
+      };
+
+      // Charger l'image en tant que source
+      img.src = base64Image;
+    });
+  }
+
+  // Fonction pour convertir une image en base64 et la redimensionner
+  function convertToBase64() {
+    var fileInput = document.getElementById('imageInput');
+    var previewImage = document.getElementById('image');
+
+    if (fileInput.files && fileInput.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var base64Image = e.target.result;
+        // Vérifier si l'image est un GIF
+        if (getMimeTypeFromBase64(base64Image) === 'image/gif') {
+          // Pour les GIF, nous n'appliquons pas de redimensionnement
+          previewImage.src = base64Image;
+          var variable = document.getElementById('styloUp').value;
+          var obj = document.getElementById(variable);
+          obj.image = base64Image;
+        } else {
+          // Pour les images JPEG et PNG, nous appliquons le redimensionnement
+          resizeImage(base64Image, 500)
+            .then(resizedBase64 => {
+              // Afficher l'image redimensionnée
+              previewImage.src = resizedBase64;
+              var variable = document.getElementById('styloUp').value;
+              var obj = document.getElementById(variable);
+              obj.image = resizedBase64;
+            })
+            .catch(error => {
+              console.error('Erreur:', error.message);
+            });
+        }
+      };
+
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  }
+  // Fonction pour obtenir le type MIME à partir de l'image en base64
+  function getMimeTypeFromBase64(base64Image) {
+    // Les types MIME par défaut pour les images JPEG, PNG et GIF
+    let mimeType = 'image/jpeg';
+
+    // Vérifier le préfixe de l'en-tête base64 pour déterminer le type MIME
+    if (base64Image.startsWith('data:image/jpeg')) {
+      mimeType = 'image/jpeg';
+    } else if (base64Image.startsWith('data:image/png')) {
+      mimeType = 'image/png';
+    } else if (base64Image.startsWith('data:image/gif')) {
+      mimeType = 'image/gif';
+    }
+
+    return mimeType;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  function getImage() {
+
+
+    var variable = document.getElementById('styloUp').value;
+    var obj = document.getElementById(variable);
+    var pthnm = obj.image;
+    pthnm = replaceString(pthnm, 'images', '');
+
+    pthnm = replaceString(pthnm, 'userImage', '');
+    pthnm = pthnm.replace('\/\/', '')
+    pthnm = pthnm.replace('\.\.', '')
+    pthnm = pthnm.replace('\/', '')
+
+
+
+    // var strprth = ''
+    // for (var u = 1; u < pthnm.length; u++) {
+    //   if (pthnm[u] != '/') { strprth = strprth + pthnm[u]; }
+    // }
+
+    //pthnm = strprth;
+
+
+    var a = prompt("Coller le nom de l'image se trouvant dans le dossier userImage :", pthnm);
+    if (a != null) {
+      var impthn = '../userImage/' + a;
+      obj.image = impthn;
+      document.getElementById('image').src = impthn;
+      for (var u = 0; u < allVariable.length; u++) {
+        if (allVariable[u].id == variable) {
+          allVariable[u].image = obj.image;
+        }
+      }
+    }
+  }
+</script>
+<script>
+  function calculnow() {
+    if (document.getElementById('button calculer').innerHTML == 'tout') {
+
+    } else {
+      var variable = document.getElementById('calculer').value;
+      var fct = writeFunction(variable);
+
+      if (fct != '!') {
+        try {
+          eval(fct);
+
+          getPropertie()
+        } catch (ex) {
+          alert('Le code contient des erreurs : \n\n' + ex.message);
+        }
+      }
+    }
+  }
+
+  function calculSystem() {
+    var str = ''
+    var ch = '';
+    var error = 0;
+    var variableName = [];
+
+    for (var u = 0; u < allVariable.length; u++) {
+      if (allVariable[u].state != 'exogene') {
+        variableName.push(allVariable[u].name + allVariable[u].indice)
+        ch = checkVariable(allVariable[u].id);
+        if (ch == 'ok') {
+          ch = '';
+        } else {
+          error = error + 1;
+          ch = ch + '\n';
+        }
+        str = str + ch;
+      }
+    }
+    if (unique(variableName).length < variableName.length) {
+      error += 1;
+      str += 'Les variables ne peuvent apparaître plusieurs fois dans le même système.'
+    }
+
+    if (error == 0) {
+      var fct = writeCode();
+      try {
+        eval(fct);
+        // mise à jour de i et de j
+        for (u = 0; u < allVariable.length; u++) {
+          var id = allVariable[u].id;
+          var sz = size(document.getElementById(id).value);
+          document.getElementById(id).i = sz[1];
+          document.getElementById(id).j = sz[0];
+        }
+
+        alert('"' + allSystem.name + '" a été entièrement calculé.')
+      } catch (ex) {
+        alert('Le code contient des erreurs : \n\n' + ex.message);
+        error = 1;
+      }
+    } else {
+      alert(error + ' variables contiennent des erreurs :\n' + str);
+    }
+    return error
+  }
+  function writeJsCode() {
+    var tp = [];
+    var id = [];
+    var nfinalite = 0;
+    for (var u = 0; u < allVariable.length; u++) {
+      id = allVariable[u].id;
+      tp.push(1000 - parseFloat(document.getElementById(id).style.top)); // pour descendant
+      if (allVariable[u].state == 'finalite') {
+        nfinalite += 1;
+      }
+    }
+    var idx = sortarray(tp);
+    var code = '';
+    var exo = '';
+    var fin = '';
+    if (nfinalite == 1) {
+      fin = ' ';
+    } else {
+      fin = ' {\n'
+    }
+    var expl = '//....................................................\n'
+      + '// ' + allSystem.name + ' : ' + allSystem.definition + '\n'
+      + '//....................................................\n';
+
+    var explFinN = '';
+    for (var u = 0; u < allVariable.length; u++) {
+      id = allVariable[idx[u]].id;
+      expl += '// ' + allVariable[idx[u]].name + allVariable[idx[u]].indice + ' : ' + allVariable[idx[u]].definition + '\n'
+      if (allVariable[idx[u]].state == 'exogene') {
+        exo = exo + allVariable[idx[u]].name + allVariable[idx[u]].indice + ',';
+      } else {
+        code = code + allVariable[idx[u]].code + '\n';
+        if (allVariable[idx[u]].state == 'finalite') {
+          if (nfinalite == 1) {
+
+            fin = fin + allVariable[idx[u]].name + allVariable[idx[u]].indice;
+          } else {
+            fin = fin + '"' + allVariable[idx[u]].name + allVariable[idx[u]].indice + '" : ' + allVariable[idx[u]].name + allVariable[idx[u]].indice + ',\n';
+            explFinN += '// ' + allVariable[idx[u]].name + allVariable[idx[u]].indice + ' = R.' + allVariable[idx[u]].name + allVariable[idx[u]].indice + ';\n'
+          }
+        }
+      }
+    }
+    if (nfinalite > 1) {
+      fin += '};\n'
+      var explFin = '// R '
+    } else {
+      var explFin = '// ' + fin;
+    }
+
+    var fct = expl
+      + '//....................................................\n'
+      + '// Exemple d\'utilisation :\n'
+      + explFin + ' = ' + allSystem.name + '(' + exo + ')' + '\n'
+      + explFinN
+      + '//....................................................\n'
+      + 'function ' + allSystem.name + '(' + exo + '){\n\n'
+      + code + '\n'
+      + 'return ' + fin
+      + '\n}\n'
+      + '//....................................................\n'
+
+    return fct;
+
+  }
+  function sortarray(test) {
+    //var test = ['b', 'c', 'd', 'a'];
+    var len = test.length;
+    var indices = new Array(len);
+    for (var i = 0; i < len; ++i) indices[i] = i;
+    indices.sort(function (a, b) { return test[a] < test[b] ? -1 : test[a] > test[b] ? 1 : 0; })
+    return indices
+  }
+
+  function writeCode() {
+    var tp = [];
+    var id = [];
+    for (var u = 0; u < allVariable.length; u++) {
+      id = allVariable[u].id;
+      tp.push(1000 - parseFloat(document.getElementById(id).style.top)); // pour descendant
+    }
+    var idx = sortarray(tp);
+    var code = '';
+    var exo = '';
+    var fin = '';
+    for (var u = 0; u < allVariable.length; u++) {
+      var id = allVariable[idx[u]].id;
+      if (allVariable[idx[u]].state == 'exogene') {
+        exo = exo + 'var ' + allVariable[idx[u]].name + allVariable[idx[u]].indice + ' = document.getElementById(' + id + ').value;\n';
+      } else {
+        code = code + allVariable[idx[u]].code + '\n';
+        fin = fin + 'document.getElementById(' + id + ').value = ' + allVariable[idx[u]].name + allVariable[idx[u]].indice + ';\n';
+      }
+    }
+    var fct = '{\n\nfunction ' + allSystem.name + '(){\n\n' + code + '\n}'
+      + '\n'
+      + exo
+      + allSystem.name + '()\n'
+      + fin + '\n'
+      + '}\n';
+
+    return fct;
+  }
+  function checkVariable(variable) {
+    var obj = document.getElementById(variable);
+    var vout = obj.name + obj.indice
+    var vin = [];
+    var idin = [];
+    var lnk = '';
+    for (var u = 0; u < allLink.length; u++) {
+      lnk = allLink[u].split('-');
+      if (lnk[1] == variable) {
+        vin.push(document.getElementById(lnk[0]).name + document.getElementById(lnk[0]).indice);
+        idin.push(lnk[0]);
+      }
+    }
+
+    // Vérifie que les variables sont dans le code
+    var allv = vin;
+    allv.push(vout);
+    let text = obj.code;
+    text = ' ' + blank(text) + ' ';
+    var position = [];
+    var nocode = [];
+    for (var u = 0; u < allv.length; u++) {
+      position = text.search(' ' + allv[u] + ' ');
+      if (position < 0) { nocode.push(allv[u]); }
+    }
+
+    //  Vérifie que les variables sont dans la formule
+
+    text = obj.formule;
+    text = ' ' + blank(text) + ' ';
+    var position = [];
+    var noformule = [];
+    for (var u = 0; u < allv.length; u++) {
+      position = text.search(' ' + allv[u] + ' ');
+      if (position < 0) { noformule.push(allv[u]); }
+    }
+    if (nocode.length == 0 && noformule == 0) {
+      check = 'ok';
+    } else {
+      errorcode = '"' + vout + '" : les variables ' + nocode + ' sont absentes du code ' + vout;
+      errorformule = '"' + vout + '" : les variables ' + noformule + ' sont absentes de la formule de ' + vout;
+      if (nocode.length == 0) { errorcode = ''; }
+      if (noformule.length == 0) { errorformule = ''; }
+      check = errorcode + '\n' + errorformule;
+    }
+    return check;
+  }
+  function writeFunction(variable) {
+    var obj = document.getElementById(variable);
+    var vout = obj.name + obj.indice
+    var vin = [];
+    var idin = [];
+    var lnk = '';
+    for (var u = 0; u < allLink.length; u++) {
+      lnk = allLink[u].split('-');
+      if (lnk[1] == variable) {
+        vin.push(document.getElementById(lnk[0]).name + document.getElementById(lnk[0]).indice);
+        idin.push(lnk[0]);
+      }
+    }
+
+    // Vérifie que les variables sont dans le code
+    var allv = vin;
+    allv.push(vout);
+    let text = obj.code;
+    text = ' ' + blank(text) + ' ';
+    var position = [];
+    var nocode = [];
+    for (var u = 0; u < allv.length; u++) {
+      position = text.search(' ' + allv[u] + ' ');
+      if (position < 0) { nocode.push(allv[u]); }
+    }
+
+    //  Vérifie que les variables sont dans la formule
+
+    text = obj.formule;
+    text = ' ' + blank(text) + ' ';
+    var position = [];
+    var noformule = [];
+    for (var u = 0; u < allv.length; u++) {
+      position = text.search(' ' + allv[u] + ' ');
+      if (position < 0) { noformule.push(allv[u]); }
+    }
+
+    var nf = Date.now()
+
+    if (nocode.length == 0 && noformule == 0) {
+
+      var fctr = 'f' + nf + '(';
+      var fcdt = ''
+      for (var u = 0; u < vin.length - 1; u++) {
+        fctr = fctr + vin[u];
+        if (u < vin.length - 2) { fctr = fctr + ','; }
+        fcdt = fcdt + 'var ' + vin[u] + ' = document.getElementById(\'' + idin[u] + '\').value;\n';
+      }
+      fctr = fctr + ')';
+
+      var fct = '{\nfunction ' + fctr + '{\n\n' + obj.code + '\n\n' + 'return ' + vout
+        + '\n    }\n\n'
+        + fcdt
+        + 'var ' + vout + ' = ' + fctr
+        + '\ndocument.getElementById(\'' + variable + '\').value = ' + vout + ';'
+        + '\nvar sz = size(' + vout + ');'
+        + '\ndocument.getElementById(\'' + variable + '\').i = sz[1];'
+        + '\ndocument.getElementById(\'' + variable + '\').j = sz[0];'
+        + '\nsetVariable(\'' + variable + '\')'
+        + '\n}';
+    } else {
+      errorcode = 'les variables ' + nocode + ' sont absentes du code ' + vout;
+      errorformule = 'les variables ' + noformule + ' sont absentes de la formule de ' + vout;
+      if (nocode.length == 0) { errorcode = ''; }
+      if (noformule.length == 0) { errorformule = ''; }
+      alert(errorcode + '\n' + errorformule)
+      fct = '!';
+    }
+
+    return fct
+
+
+
+  }
+  function help() {
+    window.open('mathhelp.html')
+  }
+
+  function calculVariable() {
+    var variable = document.getElementById('styloUp').value;
+    var obj = document.getElementById(variable);
+    if (confirm("Recalculer la variable " + obj.name + obj.indice + " ?") == true) {
+
+
+      var min = parseFloat(obj.min);
+      var max = parseFloat(obj.max);
+      var v = 0;
+      var i = parseFloat(obj.i);
+      var j = parseFloat(obj.j);
+      var vi = document.getElementById('i').style.display;
+      var vj = document.getElementById('j').style.display;
+
+      if (vi == 'none') {
+        var ki = 0;
+      } else { var ki = i; }
+      if (vj == 'none') {
+        var kj = 0;
+      } else { var kj = j; }
+
+      if (vi == 'none' && vj == 'none') { ki = 0; kj = 0; }
+
+      if (ki == 0 && kj == 0) { v = min + Math.random() * (max - min); }
+      if (ki > 0 && kj == 0) {
+        v = [];
+        for (var i = 0; i < ki; i++) {
+          v.push(min + Math.random() * (max - min))
+        }
+      }
+
+      if (ki > 0 && kj > 0) {
+        var vj = [];
+        var vi = [];
+        for (var j = 0; j < kj; j++) {
+          vi = [];
+          for (var i = 0; i < ki; i++) {
+            var r = min + Math.random() * (max - min);
+            vi.push(r);
+          }
+          vj.push(vi);
+        }
+        v = vj;
+      }
+
+      // Type
+      var type = document.getElementById('select type').value;
+
+      if (type == 'entier') {
+        if (Array.isArray(v) == true) {
+          var sze = size(v);
+          if (sze[0] == 1) {
+            for (var i = 0; i < v.length; i++) {
+              v[i] = Math.round(v[i]);
+            }
+          }
+          if (sze[0] > 1) {
+            for (var i = 0; i < v.length; i++) {
+              for (var j = 0; j < v[i].length; j++) {
+                v[i][j] = Math.round(v[i][j]);
+              }
+            }
+          }
+        } else { v = Math.round(v); }
+      }
+
+      if (type == 'vecteur croissant') {
+        if (Array.isArray(v) == true) {
+          v.sort(function (a, b) { return a - b });
+        }
+      }
+      if (type == 'vecteur decroissant') {
+        if (Array.isArray(v) == true) {
+          v.sort(function (a, b) { return b - a });
+        }
+      }
+      obj.value = v;
+      for (var i = 0; i < allVariable.length; i++) {
+        if (allVariable[i].id == variable) {
+          allVariable[i].value = v;
+          break
+        }
+      }
+
+      setVariable(variable)
+    }
+
+  }
+</script>
+<script>
+  function resizefig() {
+    var w = parseFloat(document.getElementById('information').style.width);
+    if (w == 350) {
+      document.getElementById('information').style.left = '705px';
+      document.getElementById('information').style.width = '550px';
+      document.getElementById('code').style.height = '205px';
+      document.getElementById('aggrandir').innerHTML = '&#9658; Réduire';
+    } else {
+      document.getElementById('information').style.left = '907px';
+      document.getElementById('information').style.width = '350px';
+      document.getElementById('code').style.height = '105px';
+      document.getElementById('aggrandir').innerHTML = '&#9664; Aggrandir';
+    }
+    var variable = document.getElementById('styloUp').value;
+    setVariable(variable)
+
+  }
+</script>
+<script>
+  function filter(e) {
+    let target = e.target;
+
+    if (!target.classList.contains("draggable")) {
+      return;
+    }
+
+    target.moving = true;
+
+    //NOTICE THIS 👇 Check if Mouse events exist on users' device
+    if (e.clientX) {
+      target.oldX = e.clientX; // If they exist then use Mouse input
+      target.oldY = e.clientY;
+    } else {
+      target.oldX = e.touches[0].clientX; // Otherwise use touch input
+      target.oldY = e.touches[0].clientY;
+    }
+    //NOTICE THIS 👆 Since there can be multiple touches, you need to mention which touch to look for, we are using the first touch only in this case
+
+    target.oldLeft = window.getComputedStyle(target).getPropertyValue('left').split('px')[0] * 1;
+    target.oldTop = window.getComputedStyle(target).getPropertyValue('top').split('px')[0] * 1;
+
+    document.onmousemove = dr;
+    //NOTICE THIS 👇
+    document.ontouchmove = dr;
+    //NOTICE THIS 👆
+
+    function dr(event) {
+      event.preventDefault();
+
+      if (!target.moving) {
+        return;
+      }
+      //NOTICE THIS 👇
+      if (event.clientX) {
+        target.distX = event.clientX - target.oldX;
+        target.distY = event.clientY - target.oldY;
+        target.distX = Math.round(target.distX);
+        target.distY = Math.round(target.distY);
+      } else {
+        target.distX = event.touches[0].clientX - target.oldX;
+        target.distY = event.touches[0].clientY - target.oldY;
+      }
+      //NOTICE THIS 👆
+      var xx = target.oldLeft + target.distX;
+      var yy = target.oldTop + target.distY;
+      if (yy < linkLimite[0]) {
+        //target.moving = false
+        yy = linkLimite[0];
+      }
+      if (yy > linkLimite[1]) {
+        //target.moving = false
+        yy = linkLimite[1];
+      }
+
+      target.style.left = xx + "px";
+      target.style.top = yy + "px";
+
+
+
+      ///
+      if (target.id != 'styloUp' && target.id != 'styloDown') {
+        target.style.cursor = 'grabbing';
+        movelink()
+
+
+        document.getElementById('styloUp').style.left = (xx + 20) + 'px';
+        document.getElementById('styloUp').style.top = (yy - 14) + 'px';
+        document.getElementById('styloDown').style.left = (xx + 20) + 'px';
+        document.getElementById('styloDown').style.top = (yy + 52) + 'px';
+      } else {
+        drawNewLink(target.id)
+      }
+    }
+
+    function endDrag() {
+      target.moving = false;
+      var x = parseFloat(target.style.left);
+      var y = parseFloat(target.style.top);
+      var xx = Math.round(x / 20) * 20;
+      var yy = Math.round(y / 20) * 20;
+      target.style.left = xx + 'px';
+      target.style.top = yy + 'px';
+
+
+
+      if (target.id != 'styloUp' && target.id != 'styloDown') {
+        target.style.cursor = 'grab';
+        movelink()
+        document.getElementById('styloUp').style.left = (xx + 20) + 'px';
+        document.getElementById('styloUp').style.top = (yy - 14) + 'px';
+        document.getElementById('styloDown').style.left = (xx + 20) + 'px';
+        document.getElementById('styloDown').style.top = (yy + 52) + 'px';
+      } else {
+        target.style.cursor = 'copy';
+        lastX = xx;
+        lastY = yy;
+        getNewLink()
+      }
+    }
+    target.onmouseup = endDrag;
+    //NOTICE THIS 👇
+    target.ontouchend = endDrag;
+    //NOTICE THIS 👆
+  }
+  document.onmousedown = filter;
+  //NOTICE THIS 👇
+  document.ontouchstart = filter;
+  //NOTICE THIS 👆
+
+
+</script>
+
+<script>
+  function getText() {
+    var variable = document.getElementById('styloUp').value;
+    var content = document.getElementById("formule").value;
+    var ncontent = translate(variable, content)
+    //content = '\\cos(\\omega)'
+    try {
+      var math = MathJax.Hub.getAllJax("equation")[0];
+      MathJax.Hub.Queue(["Text", math, ncontent]);
+      document.getElementById(variable).formule = content;
+    } catch {
+      document.getElementById(variable).formule = content;
+      document.getElementById('equation').innerHTML = content;
+    }
+  }
+  function translate(variable, content) {
+    // Cas particulier de delta
+    var phrase = content;
+    var newphrase = phrase;
+    for (var u = 0; u < allVariable.length; u++) {
+      var id = allVariable[u].id;
+      var vr = document.getElementById(id).name;
+      var nvr = vr;
+      if (isgreek(nvr) == true) { nvr = '\\' + nvr; }
+      var motAChanger = vr + document.getElementById(id).indice;
+      var nouveauMot = nvr + '_{' + document.getElementById(id).indice + '}';
+      newphrase = replaceString(newphrase, motAChanger, nouveauMot);
+
+    }
+    newcontent = convertirEnMathJax(newphrase);
+
+
+    return newcontent
+
+    // var phrase = content;
+    // var motAChanger = document.getElementById(variable).name + document.getElementById(variable).indice;
+    // var nouveauMot = document.getElementById(variable).name + '_{' + document.getElementById(variable).indice + '}';
+    // var newphrase = replaceString(phrase, motAChanger, nouveauMot)
+    // alert(newphrase)
+    // newcontent = convertirEnMathJax(newphrase)
+    // return newcontent
+  }
+
+  function getworkspace() {
+    var definition = allSystem.definition;
+    for (var u = 0; u < definition.length; u++) {
+      definition = definition.replace('\n', '\\n');
+      definition = definition.replace("'", "\'");
+      definition = definition.replace('\"', '\'\'');
+    }
+    var note = allSystem.note;
+    for (var u = 0; u < note.length; u++) {
+      note = note.replace('\n', '\\n');
+      note = note.replace("'", "\'");
+      note = note.replace('\"', '\'\'');
+    }
+    var source = allSystem.source;
+    for (var u = 0; u < source.length; u++) {
+      source = source.replace('\n', '\\n');
+      source = source.replace("'", "\'");
+      source = source.replace('\"', '\'\'');
+    }
+    var iframe = allSystem.iframe;
+    for (var u = 0; u < iframe.length; u++) {
+      iframe = iframe.replace('\n', '\\n');
+      iframe = iframe.replace("'", "\'");
+      iframe = iframe.replace('\"', '\'\'');
+    }
+
+    var str = 'allSystem = {\n'
+      + '"id": "1",\n'
+      + '"name": "' + allSystem.name + '",\n'
+      + '"definition":"' + definition + '",\n'
+      + '"note":"' + note + '",\n'
+      + '"source":"' + source + '",\n'
+      + '"iframe":"' + iframe + '",\n'
+      + '};\n\n';
+
+
+    str = str + 'allVariable = [\n';
+    for (var k = 0; k < allVariable.length; k++) {
+      var id = allVariable[k].id;
+      var obj = document.getElementById(id);
+      var code = obj.code;
+      for (var u = 0; u < code.length; u++) {
+        code = code.replace('\n', '\\n');
+        code = code.replace("'", "\'");
+        code = code.replace('\"', '\\"');
+      }
+      var definition = obj.definition;
+      for (var u = 0; u < definition.length; u++) {
+        definition = definition.replace('\n', '\\n');
+        definition = definition.replace("'", "\'");
+        definition = definition.replace('\"', '\'\'');
+      }
+      var note = obj.note;
+      for (var u = 0; u < note.length; u++) {
+        note = note.replace('\n', '\\n');
+        note = note.replace("'", "\'");
+        note = note.replace('\"', '\'\'');
+      }
+      var source = obj.source;
+      for (var u = 0; u < source.length; u++) {
+        source = source.replace('\n', '\\n');
+        source = source.replace("'", "\'");
+        source = source.replace('\"', '\'\'');
+      }
+
+      var iframe = obj.iframe;
+      for (var u = 0; u < iframe.length; u++) {
+        iframe = iframe.replace('\n', '\\n');
+        iframe = iframe.replace("'", "\'");
+        iframe = iframe.replace('\"', '\'\'');
+      }
+
+      var dt = data2str(obj.value);
+
+      var str = str +
+        '    {\n'
+        + '        "id": "' + obj.id + '",\n'
+        + '        "name": "' + obj.name + '",\n'
+        + '        "min": ' + obj.min + ',\n'
+        + '        "max": ' + obj.max + ',\n'
+        + '        "indice": "' + obj.indice + '",\n'
+        + '        "state": "' + obj.state + '",\n'
+        + '        "left": ' + parseFloat(obj.style.left) + ',\n'
+        + '        "top": ' + parseFloat(obj.style.top) + ',\n'
+        + '        "graphic": "' + obj.graphic + '",\n'
+        + '        "code": "' + code + '",\n'
+        + '        "type": "' + obj.type + '",\n'
+        + '        "i": ' + obj.i + ',\n'
+        + '        "j": ' + obj.j + ',\n'
+        + '        "unite": "' + obj.unite + '",\n'
+        + '        "formule": "' + obj.formule + '",\n'
+        + '        "definition": "' + definition + '",\n'
+        + '        "image": "' + obj.image + '",\n'
+        + '        "note": "' + note + '",\n'
+        + '        "source": "' + source + '",\n'
+        + '        "iframe": "' + iframe + '",\n'
+        + '        "value": ' + dt + ',\n'
+        + '      },\n';
+    }
+    str = str + '];\n\n'
+
+    str = str + 'allLink = [\n';
+    for (var k = 0; k < allLink.length; k++) {
+      str = str + '    \'' + allLink[k] + '\',\n';
+    }
+    str = str + '];'
+
+    return str
+  }
+
+  function exportdata() {
+    var variable = document.getElementById('styloUp').value;
+    var value = document.getElementById(variable).value;
+    var sz = size(value);
+    if (sz[0] == 1 && sz[1] == 1) {
+      str = value;
+    }
+    if (sz[0] == 1 && sz[1] > 1) {
+      var str = '';
+      var strk = '';
+      for (var i = 0; i < value.length; i++) {
+        strk = '"' + value[i] + '"';
+        strk = strk.replace('.', ',');
+        str = str + strk + ';';
+      }
+    }
+    if (sz[0] > 1 && sz[1] > 1) {
+      var str = '';
+      var strk = '';
+      for (var i = 0; i < value.length; i++) {
+        for (var j = 0; j < value[i].length; j++) {
+          strk = '"' + value[i][j] + '"';
+          strk = strk.replace('.', ',');
+          str = str + strk + ';'
+        }
+        str = str + '\n';
+      }
+    }
+
+    return str
+  }
+</script>
+
+
+<script>
+  readFile('data.txt')
+  function readFile(input) {
+    let file = input.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsText(file);
+    allVariable = [];
+    fileReader.onload = function () {
+      str = fileReader.result
+        + '\ndrawsystem()'
+        + '\nsetsystem()';
+      //alert(str);
+      eval(str)
+    };
+    fileReader.onerror = function () {
+      alert('fileReader.error');
+    };
+  }
+</script>
+<script>
+  readVariableFile('data.txt')
+  function readVariableFile(input) {
+    let file = input.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsText(file);
+    fileReader.onload = function () {
+      var str = fileReader.result;
+      try {
+        importVariable(str)
+      } catch (ex) {
+        alert(ex.message)
+      }
+    };
+    fileReader.onerror = function () {
+      alert('fileReader.error');
+    };
+  }
+
+  function readSystemFile(input) {
+    let file = input.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsText(file);
+    fileReader.onload = function () {
+      var str = fileReader.result;
+      importSystem(str)
+    };
+    fileReader.onerror = function () {
+      alert('fileReader.error');
+    };
+  }
+  function importSystem(str) {
+    document.getElementById('window importer').style.display = 'none';
+    var variable = document.getElementById('styloUp').value;
+    var obj = document.getElementById(variable);
+
+
+
+    getPropertie()
+    str = str.replace('allSystem', 'allSystemImport');
+    str = str.replace('allVariable', 'allVariableImport');
+    str = str.replace('allLink', 'allLinkImport');
+
+    eval(str);
+    var systemImportName = allSystemImport.name;
+    // Recher
+    var codeImport = writeCodeImport(allVariableImport);
+    var allNewVariableExogene = [];
+    var newvariable = null;
+    for (var i = 0; i < allVariableImport.length; i++) {
+      if (allVariableImport[i].state == 'exogene') {
+        allVariableImport[i].id = Date.now() + i;
+        allNewVariableExogene.push(allVariableImport[i]);
+      }
+      if (allVariableImport[i].state == 'finalite' && newvariable == null) {
+        newvariable = allVariableImport[i];
+      }
+    }
+    var strerror = '';
+    if (newvariable == null) {
+      strerror += 'La fonction ' + systemImportName + 'ne possède pas de finalité.'
+    }
+
+
+    if (strerror.length == 0) {
+      var oldname = obj.name + obj.indice;
+      var newname = newvariable.name + newvariable.indice;
+      existe = false;
+      if (existe == false) {
+        for (var u = 0; u < allVariable.length; u++) {
+          var id = allVariable[u].id;
+          if (id != null) {
+            var formule = document.getElementById(id).formule;
+            var newformule = replaceString(formule, oldname, newname);
+            var code = document.getElementById(id).code;
+            var newcode = replaceString(code, oldname, newname);
+            allVariable[u].formule = newformule;
+            allVariable[u].code = newcode;
+          }
+        }
+      }
+
+
+      var tp = parseFloat(obj.style.top);
+      lf = 20;
+      var stre = '';
+      for (var i = 0; i < allNewVariableExogene.length; i++) {
+        var idr = Date.now() + i;
+        allNewVariableExogene[i].id = idr;
+        allNewVariableExogene[i].top = tp + 80;
+        allNewVariableExogene[i].left = lf;
+        lf += 60;
+        allVariable.push(allNewVariableExogene[i])
+        allLink.push(idr + '-' + obj.id);
+        var sep = ','
+        if (i == allNewVariableExogene.length - 1) { sep = ''; }
+        stre += allNewVariableExogene[i].name + allNewVariableExogene[i].indice + sep
+      }
+      stre[stre.length - 1] = ')';
+
+      var lf = parseFloat(obj.style.left);
+      for (var i = 0; i < allVariable.length; i++) {
+        if (allVariable[i].id == obj.id) {
+          allVariable[i] = newvariable;
+          allVariable[i].id = obj.id;
+          allVariable[i].top = tp;
+          allVariable[i].left = lf;
+          allVariable[i].code = codeImport;
+          allVariable[i].formule = allVariable[i].name + allVariable[i].indice + '=' + systemImportName + '(' + stre + ')';
+        }
+      }
+
+      drawsystem()
+    } else {
+      alert(strerror)
+    }
+
+
+
+  }
+
+  function writeCodeImport(allVariableImport) {
+    var tp = [];
+    var id = [];
+    for (var u = 0; u < allVariableImport.length; u++) {
+      id = allVariableImport[u].id;
+      tp.push(10000 - parseFloat(allVariableImport[u].top)); // pour descendant
+    }
+    var idx = sortarray(tp);
+    var code = '';
+    var exo = '';
+    var fin = '';
+    for (var u = 0; u < allVariableImport.length; u++) {
+      var id = allVariableImport[idx[u]].id;
+      if (allVariableImport[idx[u]].state == 'exogene') {
+      } else {
+        code = code + allVariableImport[idx[u]].code + '\n';
+      }
+    }
+    return code;
+  }
+
+
+  function importVariable(str) {
+    eval(str);
+    var variable = document.getElementById('styloUp').value;
+    var obj = document.getElementById(variable);
+    obj.value = newvariable[0].value;
+    obj.min = newvariable[0].min;
+    obj.max = newvariable[0].max;
+    obj.i = newvariable[0].i;
+    obj.j = newvariable[0].j;
+    obj.graphic = newvariable[0].graphic;
+    obj.definition = newvariable[0].definition;
+    obj.unite = newvariable[0].unite;
+    obj.source = newvariable[0].source;
+    obj.type = newvariable[0].type;
+    obj.formule = newvariable[0].formule;
+    obj.note = newvariable[0].note;
+    obj.code = newvariable[0].code;
+    obj.image = newvariable[0].image;
+
+
+    var oldname = obj.name + obj.indice;
+    var newname = newvariable[0].name + newvariable[0].indice;
+    obj.name = newvariable[0].name;
+    obj.indice = newvariable[0].indice;
+    existe = false;
+    if (existe == false) {
+      for (var u = 0; u < allVariable.length; u++) {
+        var id = allVariable[u].id;
+        var formule = document.getElementById(id).formule;
+        var newformule = replaceString(formule, oldname, newname);
+        var code = document.getElementById(id).code;
+        var newcode = replaceString(code, oldname, newname);
+        allVariable[u].formule = newformule;
+        allVariable[u].code = newcode;
+        if (id == variable) {
+          document.getElementById('formule').value = newformule;
+          document.getElementById('code').value = newcode;
+        }
+      }
+    }
+
+    setVariable(variable);
+    getPropertie()
+    document.getElementById('window importer').style.display = 'none';
+
+  }
+</script>
+<script>
+  readDataFile('data.txt')
+  function readDataFile(input) {
+    let file = input.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsText(file);
+    fileReader.onload = function () {
+      var str = fileReader.result;
+      importData(str)
+    };
+    fileReader.onerror = function () {
+      alert('fileReader.error');
+    };
+  }
+
+  function importData(str) {
+    var vmin = Infinity;
+    var vmax = -Infinity;
+    var data = str.split(/\r\n|\n/);
+    var sz = size(data);
+    if (sz[1] == 2) {
+      data = data[0].split(';');
+      for (var u = 0; u < data.length; u++) {
+        data[u] = data[u].replace('\,', '\.');
+        data[u] = parseFloat(data[u]);
+        if (data[u] < vmin) { vmin = data[u]; }
+        if (data[u] > vmax) { vmax = data[u]; }
+
+      }
+    }
+    if (sz[1] > 2) {
+      var alldata = [];
+      for (var k = 0; k < data.length - 1; k++) {
+        var datat = data[k].split(';');
+        for (var u = 0; u < datat.length; u++) {
+          datat[u] = datat[u].replace('\,', '\.');
+          datat[u] = parseFloat(datat[u]);
+          if (datat[u] < vmin) { vmin = datat[u]; }
+          if (datat[u] > vmax) { vmax = datat[u]; }
+
+        }
+        alldata.push(datat)
+      }
+      data = alldata;
+    }
+
+    var sz = size(data);
+    var variable = document.getElementById('styloUp').value;
+    var obj = document.getElementById(variable);
+    obj.value = data;
+    obj.min = vmin;
+    obj.max = vmax;
+    obj.i = sz[1];
+    obj.j = sz[0];
+    obj.graphic = 'line';
+    if (sz[0] == 1) {
+      obj.indice = 'i';
+    }
+    if (sz[0] > 1) {
+      obj.indice = 'ij';
+    }
+    setVariable(variable);
+    getPropertie()
+    document.getElementById('window importer').style.display = 'none';
+  }
+
+  function applyPressePapier() {
+    var text = document.getElementById('applyPressePapier').value;
+    text = text.replace(/\,/g, "\.");
+    text = text.split('\n')
+    var data = [];
+    var mn = Infinity;
+    var mx = -Infinity;
+    for (var i = 0; i < text.length - 1; i++) {
+      var dt = text[i];
+      dt = dt.split(/[\t;]/);
+      var line = [];
+      for (j = 0; j < dt.length; j++) {
+        var k = parseFloat(dt[j]);
+        if (k < mn) { mn = k; };
+        if (k > mx) { mx = k; };
+        line.push(k)
+      }
+      data.push(line)
+    }
+    var sz = size(data);
+    if (sz[0] == 1) {
+      data = data[0];
+    }
+    sz = size(data);
+    var variable = document.getElementById('styloUp').value;
+    obj = document.getElementById(variable);
+    obj.value = data;
+    document.getElementById('min').value = mn;
+    document.getElementById('max').value = mx;
+    document.getElementById('i').value = sz[0];
+    document.getElementById('j').value = sz[1];
+    getPropertie()
+    document.getElementById('applyPressePapier').value = '';
+    document.getElementById('window importer').style.display = 'none';
+
+  }
+</script>
+<script type="text/javascript">
+  function deposerFile() {
+    var error = calculSystem();
+    var strerror = '';
+    if (allSystem.name.length < 3) {
+      strerror += 'La fonction attribuée au modèle doit contenir au moins 3 caractère.\n';
+    }
+    if (error != 0) {
+      strerror += 'Le code ne fonctionne pas\n';
+    }
+    // Verifie le contenu du systems
+    if (allSystem.definition.length == 0) {
+      strerror += 'Le modèle n\'est pas défini.\n';
+    }
+    if (allSystem.note.length == 0) {
+      strerror += 'Le modèle n\'est pas annoté.\n';
+    }
+    var strerrorvariable = '';
+    var nv = 0;
+    for (var u = 0; u < allVariable.length; u++) {
+      if (allVariable[u].definition.length == 0 || allVariable[u].note.length == 0) {
+        nv += 1;
+        strerrorvariable = nv + ' variables ne sont pas définies ou annotées.\n';
+      }
+    }
+    strerror += strerrorvariable;
+
+    if (strerror.length == 0) {
+      var str = getworkspace();
+
+      var a = prompt('A quel nom voulez-vous déposer le fichier', 'NOM PRENOM');
+      if (a != null) {
+        str = 'var userName = "' + a + '"; ' + str;
+        var dateObj = new Date();
+        var hour = dateObj.getHours();
+        var minute = dateObj.getMinutes();
+        var month = dateObj.getUTCMonth() + 1; //months from 1-12
+        var day = dateObj.getUTCDate();
+        var year = dateObj.getUTCFullYear();
+        var newdate = hour + 'h' + minute + ' le ' + day + " " + month + " " + year;
+        var fileName = allSystem.name + ' crée le ' + newdate + ' par ' + a + '.tstx'; // You can use the .txt extension if you want
+        FileSave(str, fileName)
+        window.open('https://docs.google.com/forms/d/e/1FAIpQLSdL-7fMGlfZIyy1fGkc8j5RH4q3GY_IK0Dnx4wLm8qawxVTFw/viewform')
+      }
+    } else {
+      alert('Vous ne pouvez pas déposer ce fichier :\n\n' + strerror)
+    }
+
+  }
+  function saveFile() {
+    if (allSystem.name.length > 2) {
+      var str = getworkspace();
+      var dateObj = new Date();
+      var hour = dateObj.getHours();
+      var minute = dateObj.getMinutes();
+      var month = dateObj.getUTCMonth() + 1; //months from 1-12
+      var day = dateObj.getUTCDate();
+      var year = dateObj.getUTCFullYear();
+      var newdate = hour + 'h' + minute + ' le ' + day + " " + month + " " + year;
+      var fileName = allSystem.name + ' ' + newdate + '.tstx'; // You can use the .txt extension if you want
+      FileSave(str, fileName)
+    } else {
+      alert('Veuillez donner un nom au toast (plus de 3 lettres).')
+    }
+  }
+  function startexport() {
+    var variable = document.getElementById('styloUp').value;
+    var str = exportdata();
+    var fileI = 'variable ' + document.getElementById(variable).name + document.getElementById(variable).indice + '.csv';
+    FileExport(str, fileI)
+  }
+
+  function FileSave(sourceText, fileIdentity) {
+    var workElement = document.createElement("a");
+    if ('download' in workElement) {
+      workElement.href = "data:" + 'text/plain' + "charset=utf-8," + (sourceText);
+      workElement.setAttribute("download", fileIdentity);
+      document.body.appendChild(workElement);
+      var eventMouse = document.createEvent("MouseEvents");
+      eventMouse.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      workElement.dispatchEvent(eventMouse);
+      document.body.removeChild(workElement);
+    } else throw 'File saving not supported for this browser';
+  }
+  function FileExport(sourceText, fileIdentity) {
+    var workElement = document.createElement("a");
+    if ('download' in workElement) {
+      workElement.href = "data:" + 'text/plain' + "charset=utf-8," + escape(sourceText);
+      workElement.setAttribute("download", fileIdentity);
+      document.body.appendChild(workElement);
+      var eventMouse = document.createEvent("MouseEvents");
+      eventMouse.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      workElement.dispatchEvent(eventMouse);
+      document.body.removeChild(workElement);
+    } else throw 'File saving not supported for this browser';
+  }
+
+  function startexportVariable() {
+    var variable = document.getElementById('styloUp').value;
+    var obj = document.getElementById(variable);
+
+    var value = obj.value;
+    var sz = size(value);
+
+    if (sz[0] == 1 && sz[1] == 1) {
+      strdata = value;
+    }
+    if (sz[0] == 1 && sz[1] > 1) {
+      var strdata = '['
+      for (var i = 0; i < value.length; i++) {
+        strdata = strdata + value[i]
+        if (i < value.length - 1) {
+          strdata = strdata + ','
+        }
+      }
+      strdata = strdata + ']';
+    }
+    if (sz[0] > 1 && sz[1] > 1) {
+      var strdata = '[\n'
+      for (var i = 0; i < value.length; i++) {
+        strdata = strdata + '[';
+        for (var j = 0; j < value[i].length; j++) {
+          strdata = strdata + value[i][j];
+          if (j < value[i].length - 1) {
+            strdata = strdata + ','
+          }
+        }
+        strdata = strdata + '],\n'
+      }
+      strdata = strdata + ']';
+    }
+    var code = obj.code;
+    for (var u = 0; u < code.length; u++) {
+      code = code.replace('\n', '\\n');
+      code = code.replace("'", "\'");
+      code = code.replace('\"', '\\"');
+    }
+    var definition = obj.definition;
+    var definition = obj.definition;
+    for (var u = 0; u < definition.length; u++) {
+      definition = definition.replace('\n', '\\n');
+      definition = definition.replace("'", "\'");
+      definition = definition.replace('\"', '\'\'');
+    }
+    var note = obj.note;
+    var note = obj.note;
+    for (var u = 0; u < note.length; u++) {
+      note = note.replace('\n', '\\n');
+      note = note.replace("'", "\'");
+      note = note.replace('\"', '\'\'');
+    }
+
+    var strexo = 'newvariable = [{\n'
+      + '"id": ' + obj.id + ' ' + ',\n'
+      + '"name": "' + obj.name + '"' + ',\n'
+      + '"min": ' + obj.min + ',\n'
+      + '"max": ' + obj.max + ',\n'
+      + '"indice": "' + obj.indice + '",\n'
+      + '"state": "exogene"' + ',\n'
+      + '"left": 20' + ',\n'
+      + '"top": 20' + ',\n'
+      + '"value": ' + strdata + ',\n'
+      + '"graphic": "' + obj.graphic + '"' + ',\n'
+      + '"code": "' + code + '"' + ',\n'
+      + '"type": "' + obj.type + '"' + ',\n'
+      + '"i": ' + obj.i + ',\n'
+      + '"j": ' + obj.j + ',\n'
+      + '"unite": "' + obj.unite + '"' + ',\n'
+      + '"definition": "' + definition + '"' + ',\n'
+      + '"formule": "' + obj.formule + '"' + ',\n'
+      + '"note": "' + note + '"' + ',\n'
+      + '"source": "' + obj.source + '"' + ',\n'
+      + '"iframe": ""' + ',\n'
+      + '"date": "' + '' + '"' + ',\n'
+      + '"image": "' + obj.image + '"' + ',\n'
+      + '}];' + '\n';
+
+
+    var dateObj = new Date();
+    var hour = dateObj.getHours();
+    var minute = dateObj.getMinutes();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var newdate = hour + 'h' + minute + ' le ' + day + " " + month + " " + year;
+    var fileI = 'variable ' + obj.name + obj.indice + ' ' + obj.definition + ' ' + newdate + '.sytx';
+    FileSave(strexo, fileI)
+    document.getElementById('window exporter').style.display = 'none';
+  }
+</script>
+<script>
+  function closeDiaporama() {
+    document.getElementById('window diaporama').style.bottom = '100%';
+    document.getElementById('window diaporama').style.top = '-100%';
+    document.getElementById('window').style.display = 'block';
+
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) { // Pour Firefox
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) { // Pour Chrome, Safari et Opera
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { // Pour Internet Explorer et Edge
+      document.msExitFullscreen();
+    }
+
+    // Supprimer le gestionnaire d'événement lorsque l'on quitte le mode plein écran
+    document.removeEventListener('keydown', exitFullScreenOnEscape);
+  }
+
+  function displayDiaporama() {
+    setsystem()
+    document.getElementById('window diaporama').style.bottom = '0px';
+    document.getElementById('window diaporama').style.top = '0px';
+    document.getElementById('window').style.display = 'none';
+
+    // Trie les variables
+    var tp = [];
+    for (var u = 0; u < allVariable.length; u++) {
+      var id = allVariable[u].id;
+      var obj = document.getElementById(id);
+      tp.push(parseFloat(obj.style.top));
+    }
+    var idx = sortarray(tp);
+    //var strdiapo = '<div class="slide">'
+    //+ '</div>';
+
+
+    var strmenu = '<div class="slideButton" style="top:0px;background:rgba(2, 53, 77, 0.9);font-style:normal;" id="slideButton0" onclick="chooseSlide(0)">&#9776;</div>';
+    var tpmenu = 60;
+    var listdiapo = [0];
+    for (var u = 0; u < allVariable.length; u++) {
+      var id = allVariable[idx[u]].id;
+      listdiapo.push(id)
+
+      var obj = document.getElementById(id);
+      var vr = obj.name;
+      if (isgreek(vr)) { vr = '&' + vr + ';' }
+      vr = vr + '<sub>' + obj.indice + '</sub>';
+      var bckcolor = obj.style.background;
+      strmenu = strmenu + '<div class="slideButton" '
+        + 'style="top:' + tpmenu + 'px;background:' + bckcolor + '" id="slideButton' + id + '"'
+        + 'onclick="chooseSlide(' + id + ')">'
+        + '<span>' + vr + '<span>'
+        + '</div>';
+      tpmenu = tpmenu + 60;
+
+    }
+
+    document.getElementById('menu diaporama').innerHTML = strmenu;
+    chooseSlide(0)
+    document.getElementById('diaporama').list = listdiapo;
+    document.getElementById('console diaporama').style.display = 'none';
+  }
+  function chooseSlide(k) {
+    var allbutton = document.getElementsByClassName('slideButton');
+    for (var u = 0; u < allbutton.length; u++) {
+      allbutton[u].style.opacity = 0.5;
+    }
+    document.getElementById('slideButton' + k).style.opacity = 1;
+    document.getElementById('diaporama titre').style.display = 'none';
+
+    document.getElementById('diaporama cache').style.display = 'block';
+    document.getElementById('diaporama cache').style.height = '80px';
+
+
+
+
+
+    document.getElementById('diaporama').style.background = document.getElementById('slideButton' + k).style.background;
+    document.getElementById('diaporama cache').style.background = document.getElementById('slideButton' + k).style.background;
+    if (k == 0) {
+      document.getElementById('diaporama unite').innerHTML = '';
+      document.getElementById('diaporama text graphic').style.opacity = 0;
+      document.getElementById('diaporama text graphic').innerHTML = '';
+
+      document.getElementById('diaporama definition').innerHTML = allSystem.definition;
+      document.getElementById('diaporama note').innerHTML = allSystem.note;
+      document.getElementById('diaporama source').innerHTML = allSystem.source;
+
+
+      document.getElementById('graphic diaporama').style.opacity = 0;
+      document.getElementById('diaporama image').style.opacity = 0;
+
+      // Content de la formule
+      allSystem.name = document.getElementById("system.name").value;
+      var exo = ''; var vr = ''; var fin = '';
+      var nf = 0;
+      for (var u = 0; u < allVariable.length; u++) {
+        vr = allVariable[u].name;
+        if (isgreek(vr)) { vr = '\\' + vr }
+        if (allVariable[u].state == 'exogene') {
+          exo = exo + '\\color{rgba(85,143,206,1)}{' + vr + '_{' + allVariable[u].indice + '}},';
+        }
+        if (allVariable[u].state == 'finalite') {
+          fin = fin + '\\color{red}{' + vr + '_{' + allVariable[u].indice + '}},';
+          nf = nf + 1;
+        }
+      }
+      var strexo = '';
+      for (var u = 0; u < exo.length - 1; u++) {
+        strexo = strexo + exo[u];
+      }
+      var strfin = '';
+
+      for (var u = 0; u < fin.length - 1; u++) {
+        strfin = strfin + fin[u];
+      }
+      if (nf > 1) {
+        strfin = '[' + strfin + ']';
+      }
+
+      var ncontent = strfin + '=' + '\\mathrm{' + allSystem.name + '}\\left(' + strexo + '\\right)';
+      //var content = str + '\\cos(\\omega)' + Math.random() + '\\right)';
+      var math = MathJax.Hub.getAllJax("diaporama equation")[0];
+      MathJax.Hub.Queue(["Text", math, ncontent]);
+
+
+    }
+
+    if (k != 0) {
+
+      var obj = document.getElementById(k);
+      var unite = obj.unite;
+      if (unite.length > 0) { unite = 'en ' + unite; }
+      document.getElementById('diaporama unite').innerHTML = unite;
+      document.getElementById('diaporama definition').innerHTML = obj.definition;
+      document.getElementById('diaporama source').innerHTML = obj.source;
+
+      var note = obj.note;
+
+      document.getElementById('diaporama note').innerHTML = note;
+
+      if (obj.iframe.length < 10) {
+        document.getElementById('diaporama image').src = obj.image;
+        document.getElementById('diaporama image').style.display = 'block';
+        document.getElementById('diaporama iframe').innerHTML = '';
+        document.getElementById('diaporama image').style.opacity = 1;
+
+
+      } else {
+        document.getElementById('diaporama image').style.display = 'none';
+        var iframe = obj.iframe;
+        iframe = remplacerApostrophes(iframe)
+        document.getElementById('diaporama iframe').innerHTML = iframe;
+      }
+
+
+      // Met à jour la formule
+      var vr = obj.name;
+      vr = obj.name;
+      if (isgreek(vr)) { vr = '\\' + vr; }
+      if (obj.state != 'exogene') {
+        var content = obj.formule;
+        var ncontent = translate(k, content);
+
+      } else {
+        if (obj.min != obj.max) {
+          var content = obj.min + '\\leq ' + vr + '\\leq' + obj.max;
+        } else {
+          var content = vr + '=' + obj.max;
+          document.getElementById('diaporama unite').innerHTML = obj.unite;
+        }
+        ncontent = content;
+      }
+
+      //try {
+      var math = MathJax.Hub.getAllJax("diaporama equation")[0];
+      MathJax.Hub.Queue(["Text", math, ncontent]);
+
+      // Met à jour le graphic
+      var newdata = obj.value;
+      var type = obj.graphic;
+      document.getElementById('graphic diaporama').style.opacity = 1;
+
+      drawchartdiaporama(graphicdiaporama, newdata, obj.graphic, obj.unite)
+    }
+
+    setTimeout(() => {
+      document.getElementById('diaporama cache').style.display = 'block';
+      document.getElementById('diaporama titre').style.display = 'block';
+
+      setTimeout(() => {
+        document.getElementById('diaporama cache').style.height = '0px';
+      }, "250")
+      //document.getElementById('diaporama').style.opacity = 1;
+      //document.getElementById('diaporama').style.top = '50px';
+      // document.getElementById('diaporama').style.bottom = '50px';
+
+    }, "250")
+  }
+  function chooseSlidePlus() {
+    var list = document.getElementById('diaporama').list;
+    var allbutton = document.getElementsByClassName('slideButton');
+    for (u = 0; u < allbutton.length; u++) {
+      if (allbutton[u].style.opacity == 1) { var v = u; };
+    }
+    v = v + 1;
+    if (v > allbutton.length - 1) { v = 0; }
+    chooseSlide(list[v])
+  }
+</script>
+<script>
+  function closeSimuler() {
+    document.getElementById('window simuler').style.bottom = '100%';
+    document.getElementById('window simuler').style.top = '-100%';
+    document.getElementById('window').style.display = 'block';
+
+  }
+  function simuler() {
+    setsystem()
+    var error = calculSystem()
+    if (error == 0) {
+      document.getElementById('window simuler').style.bottom = '0px';
+      document.getElementById('window simuler').style.top = '0px';
+      document.getElementById('window').style.display = 'none';
+      document.getElementById('input').innerHTML = '';
+      document.getElementById('output').innerHTML = '?';
+      document.getElementById('resultat simulation').style.display = 'none';
+      document.getElementById('parametre simulation').style.display = 'flex';
+
+      var id = '';
+      var obj = '';
+      var divinput = '';
+      var divoutput = '';
+      var str = "";
+      var strv = "";
+      var sz = [];
+      var displayinput = '';
+      var strunite = 0;
+      for (var u = 0; u < allVariable.length; u++) {
+        var id = allVariable[u].id;
+        var obj = document.getElementById(id);
+        var unite = '';
+        var action = 'selectSimulation(' + obj.id + ')';
+        var cursor = 'pointer;'
+
+        if (obj.unite.length > 0) {
+          unite = ' en ' + obj.unite;
+        }
+        var strv = '<div class="simulation' + obj.state + '" style="margin-right:20%;cursor:default;" id="variable' + obj.id + '" >';
+        var displayinput = 'block';
+        sz = size(obj.value);
+        if (sz[0] > 1 || sz[1] > 1 && obj.state == 'exogene') {
+          strv = '<div class="simulation' + obj.state + '" style="margin-right:20%;cursor:not-allowed;opacity:0.6" id="variable' + obj.id + '" >';
+          displayinput = 'none';
+          action = '';
+          cursor = 'not-allowed';
+        }
+        if (obj.state != 'exogene') {
+          displayinput = 'none';
+          action = 'selectSimulation(' + obj.id + ')';
+          cursor = 'pointer;'
+        }
+        var strname = obj.name;
+        if (isgreek(strname) == true) { strname = '&' + strname + ';' }
+        var str = strv
+          + '<table style="color:white;width:100%;font-size:14px;" border=0><tr>'
+          + '<td style="padding-right:5px;width:30px;text-align:right;cursor:' + cursor + ';" onclick="' + action + '" >'
+          + '<span style="font-family:\'Times New Roman\', Times, serif;font-style: italic;font-size:24px;">'
+          + strname + '<sub>' + obj.indice + '</sub></span></td>'
+          + '<td width="1px" style="padding:0px;">'
+          + '<input style="position:relative;display:' + displayinput + ';width:50px;" value=' + obj.value + ' id="input' + obj.id + '" ></input>'
+          + '</td>'
+          + '<td style="padding-left:5px;cursor:' + cursor + '" onclick="' + action + '">'
+          + unite + '</td>'
+          + '<td style="text-align:right;width:20%;cursor:' + cursor + ';" onclick="' + action + '" ><img src="' + obj.image + '" style="width:100%;">'
+          + '</td></tr>'
+          + '<tr>'
+          + '<td style="cursor:' + cursor + '" onclick="' + action + '"></td>'
+          + '<td colspan="3" onclick="' + action + '" style="cursor:' + cursor + ';" >' + obj.definition + '</td>'
+          + '</tr>'
+          + '</table>'
+          + '</div>';
+        if (obj.state == 'exogene') {
+          divinput = divinput + str;
+        } else {
+          divoutput = divoutput + str;
+        }
+      }
+      document.getElementById('list input').innerHTML = divinput;
+      document.getElementById('list output').innerHTML = divoutput;
+
+      document.getElementById('button simulation').input = [];
+      document.getElementById('button simulation').output = [];
+
+    }
+  }
+
+  function selectSimulation(k) {
+    document.getElementById('resultat simulation').style.display = 'none';
+    document.getElementById('parametre simulation').style.display = 'flex';
+
+    var obj = document.getElementById('variable' + k);
+    //alert(parseFloat(obj.style.marginRight))
+
+    var parent = obj.parentElement;
+    var children = parent.children;
+    if (parent.id == 'list output') {
+      for (var u = 0; u < children.length; u++) {
+        children[u].style.marginRight = '20%';
+        children[u].style.borderWidth = '0px';
+      }
+
+      var strname = document.getElementById(k).name;
+      if (isgreek(strname) == true) { strname = '&' + strname + ';'; }
+
+      var str = '<i>' + strname + '<sub>' + document.getElementById(k).indice + '</sub></i>';
+      document.getElementById('output').innerHTML = str;
+      document.getElementById('button simulation').style.background = document.getElementById(k).style.background;
+      //document.getElementById('button simuler').style.background
+      document.getElementById('button simulation').output = k;
+
+    }
+
+    if (parseFloat(obj.style.marginRight) == 0) {
+      obj.style.marginRight = '20%';
+      obj.style.borderWidth = '0px';
+      document.getElementById('input' + k).style.display = 'block';
+    } else {
+      obj.style.marginRight = '0%';
+      obj.style.borderWidth = '2px';
+      document.getElementById('input' + k).style.display = 'none';
+    }
+
+    if (parent.id == 'list input') {
+      var str = ' ';
+      var id = '';
+      document.getElementById('button simulation').croissant = [];
+      document.getElementById('button simulation').input = [];
+      for (var u = 0; u < children.length; u++) {
+        if (parseFloat(children[u].style.borderWidth) == 2) {
+          id = children[u].id;
+          id = id.replace('variable', '');
+
+          var strname = document.getElementById(id).name;
+          if (isgreek(strname) == true) { strname = '&' + strname + ';'; }
+
+          str = str + '<span style="font-size: 26px;font-family: \'Times New Roman\', Times, serif;font-style:italic;cursor:pointer;"'
+            + 'id="arrow' + id + '" onclick="setarrow(\'arrow' + id + '\')" class="croissant">'
+            + strname + '<sub>' + document.getElementById(id).indice + '</sub> &#8599; </span>';
+          document.getElementById('button simulation').input.push(id);
+          document.getElementById('button simulation').croissant.push(1);
+
+        }
+      }
+      str[str.length - 1] = ' ';
+      if (str == '') { str = '?'; }
+      document.getElementById('input').innerHTML = str;
+
+    }
+  }
+  function setarrow(idr) {
+    var str = document.getElementById(idr).className;
+    var input = document.getElementById('button simulation').input;
+
+    var id = idr.replace('arrow', '');
+    var i = '';
+    for (var u = 0; u < input.length; u++) {
+      if (parseFloat(input[u]) == parseFloat(id)) { i = u; }
+    }
+    var strname = document.getElementById(id).name;
+    if (isgreek(strname) == true) { strname = '&' + strname + ';'; }
+    if (str == 'croissant') {
+      document.getElementById(idr).innerHTML = strname + '<sub>' + document.getElementById(id).indice + '</sub>&#8600; ';
+      document.getElementById(idr).className = 'decroissant';
+      document.getElementById('button simulation').croissant[i] = -1;
+    } else {
+      document.getElementById(idr).innerHTML = strname + '<sub>' + document.getElementById(id).indice + '</sub> &#8599; ';
+      document.getElementById(idr).className = 'croissant';
+      document.getElementById('button simulation').croissant[i] = 1;
+    }
+  }
+
+  function simulenow() {
+    var input = document.getElementById('button simulation').input;
+    var output = document.getElementById('button simulation').output;
+    var croissant = document.getElementById('button simulation').croissant;
+
+
+    if (Array.isArray(output) == false && input.length > 0) {
+      var fct = writeSimulation(input, output, croissant);
+      try {
+        eval(fct);
+        var data = datasimulation;
+      } catch (ex) {
+        alert('Le code contient des erreurs : \n\n' + ex.message);
+        error = 1;
+      }
+      document.getElementById('resultat simulation').style.display = 'flex';
+      document.getElementById('parametre simulation').style.display = 'none';
+
+      var sz = size(data);
+      if (sz[0] == 1) {
+        lbl = [];
+        for (var i = 0; i < data.length; i++) {
+          lbl[lbl.length] = '';
+        }
+      }
+      if (sz[0] > 1) {
+        lbl = [];
+        for (var i = 0; i < data[0].length; i++) {
+          lbl[lbl.length] = '';
+        }
+      }
+      drawchart(graphicsimulation, data, '', lbl, 'line', false)
+      allSystem.value = data;
+      allSystem.output = output;
+
+
+    } else {
+      alert('Sélectionner au moins un levier et une finalité.')
+    }
+  }
+  function writeSimulation(input, output, croissant) {
+    var tp = [];
+    var id = [];
+    for (var u = 0; u < allVariable.length; u++) {
+      id = allVariable[u].id;
+      tp.push(1000 - parseFloat(document.getElementById(id).style.top)); // pour descendant
+    }
+    var idx = sortarray(tp);
+    var code = '';
+    var exo = '';
+    var fin = '';
+    for (var u = 0; u < allVariable.length; u++) {
+      id = allVariable[idx[u]].id;
+      if (allVariable[idx[u]].state == 'exogene') {
+        exo = exo + 'var ' + allVariable[idx[u]].name + allVariable[idx[u]].indice + ' = document.getElementById(' + id + ').value;\n';
+      } else {
+        code = code + allVariable[idx[u]].code + '\n';
+      }
+    }
+
+    var str = allSystem.name + '(';
+    for (var u = 0; u < input.length; u++) {
+      str = str + document.getElementById(input[u]).name + document.getElementById(input[u]).indice;
+      if (u < input.length - 1) {
+        str = str + ',';
+      }
+    }
+    str = str + ')';
+
+    var strdx = '';
+    var strsim = '';
+    var sz = size(document.getElementById(output).value);
+    var niteration = 50;
+    if (sz[0] == 1 && sz[1] == 1) {
+      niteration = 500;
+    }
+    for (var u = 0; u < input.length; u++) {
+      var nm = document.getElementById(input[u]).name + document.getElementById(input[u]).indice;
+      if (croissant[u] == 1) {
+        strdx = strdx + 'var ' + nm
+          + ' = ' + document.getElementById(input[u]).min;
+        var signe = '+';
+      } else {
+        strdx = strdx + 'var ' + nm
+          + ' = ' + document.getElementById(input[u]).max;
+        var signe = '-'
+      }
+      var dx = (document.getElementById(input[u]).max - document.getElementById(input[u]).min) / niteration;
+      strdx = strdx + ' ;\n';
+      strsim = strsim + '    var ' + nm + ' = ' + nm + signe + dx + ' ;\n';
+    }
+    var nmout = document.getElementById(output).name + document.getElementById(output).indice;
+
+
+    var fct = '{\n\n'
+      + ' function ' + str
+      + '{\n\n' + code + '\n'
+      + 'return ' + nmout
+      + '\n}\n\n'
+      + exo + '\n'
+      + strdx
+      + 'datasimulation = [];\n\n'
+      + 'for (simulation=0;simulation<' + niteration + ';simulation++){\n\n'
+      + '    datasimulation.push(' + str + ')\n'
+      + strsim + '\n}\n'
+      + '\n\n'
+      + '}\n';
+    return fct;
+  }
+  function exportSimulation() {
+    var value = allSystem.value;
+
+    var sz = size(value);
+    if (sz[0] == 1 && sz[1] == 1) {
+      str = value;
+    }
+    if (sz[0] == 1 && sz[1] > 1) {
+      var str = '';
+      var strk = '';
+      for (var i = 0; i < value.length; i++) {
+        strk = '"' + value[i] + '"';
+        strk = strk.replace('.', ',');
+        str = str + strk;
+        if (i < value.length - 1) {
+          str = str + ';';
+        }
+      }
+    }
+
+    if (sz[0] > 1 && sz[1] > 1) {
+      var str = '';
+      var strk = '';
+      for (var i = 0; i < value.length; i++) {
+        for (var j = 0; j < value[i].length; j++) {
+          strk = '"' + value[i][j] + '"';
+          strk = strk.replace('.', ',');
+          str = str + strk + ';'
+        }
+        str = str + ';\n';
+      }
+    }
+    var fileName = 'simulation ' + document.getElementById(allSystem.output).name
+      + document.getElementById(allSystem.output).indice;
+    FileExport(str, fileName + '.csv')
+  }
+
+</script>
+<script>
+  function toggleFullScreen() {
+    const doc = window.document;
+    const docEl = doc.documentElement;
+
+    // Demander au navigateur d'entrer en mode plein écran
+    if (docEl.requestFullscreen) {
+      docEl.requestFullscreen();
+    } else if (docEl.mozRequestFullScreen) { // Pour Firefox
+      docEl.mozRequestFullScreen();
+    } else if (docEl.webkitRequestFullscreen) { // Pour Chrome, Safari et Opera
+      docEl.webkitRequestFullscreen();
+    } else if (docEl.msRequestFullscreen) { // Pour Internet Explorer et Edge
+      docEl.msRequestFullscreen();
+    }
+
+    // Ajouter un gestionnaire d'événement pour détecter l'appui sur la touche "Échap"
+    document.addEventListener('keydown', exitFullScreenOnEscape);
+  }
+
+  function exitFullScreenOnEscape(event) {
+    // Vérifier si la touche "Échap" (ou "Escape") est enfoncée
+    if (event.key === 'Escape') {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) { // Pour Firefox
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) { // Pour Chrome, Safari et Opera
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { // Pour Internet Explorer et Edge
+        document.msExitFullscreen();
+      }
+
+      // Supprimer le gestionnaire d'événement lorsque l'on quitte le mode plein écran
+      document.removeEventListener('keydown', exitFullScreenOnEscape);
+    }
+  }
+</script>
